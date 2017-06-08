@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import webapp2
-# from google.appengine.api import urlfetch
-# import urllib
+from google.appengine.api import urlfetch
+import urllib
 import json
-import urllib3
+# import urllib3
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -44,17 +44,17 @@ class OauthHandler(webapp2.RequestHandler):
 		
 		# post to google
 		# source: https://cloud.google.com/appengine/docs/standard/python/issue-requests
-		#try:
+		try:
 			# put secret, client, etc in here
-		form_fields = {
-			'code': code_value,
-			'client_id': '171910885128-t2c20dlngoajvamvpasrs8m7e9bvgf1m.apps.googleusercontent.com',
-			'client_secret': 'u8WHIiKGuqiRxFu6leks8p83',
-			'redirect_uri': 'https://oauth-assignment.appspot.com/oauth',
-			'grant_type': 'authorization_code'}
+			form_fields = {
+				'code': code_value,
+				'client_id': '171910885128-t2c20dlngoajvamvpasrs8m7e9bvgf1m.apps.googleusercontent.com',
+				'client_secret': 'u8WHIiKGuqiRxFu6leks8p83',
+				'redirect_uri': 'https://oauth-assignment.appspot.com/oauth',
+				'grant_type': 'authorization_code'}
 			
-			#post_data = urllib.urlencode(UrlPostHandler.form_fields)
-			#headers = {'Content-Type': 'application/json'}
+			post_data = urllib.urlencode(UrlPostHandler.form_fields)
+			headers = {'Content-Type': 'application/json'}
 			#result = urlfetch.fetch(
 			#	url = 'https://www.googleapis.com/oauth2/v4/token',
 			#	payload = form_data,
@@ -64,12 +64,12 @@ class OauthHandler(webapp2.RequestHandler):
 			#self.response.write('I got the post back')
 			
 			# source: http://urllib3.readthedocs.io/en/latest/user-guide.html
-		r = http.request(
-			'POST',
-			'https://www.googleapis.com/oauth2/v4/token',
-			fields=form_fields)
-		#except urlfetch.Error:
-		#	logging.exception('Caught exception fetching url')
+			#r = http.request(
+			#	'POST',
+			#	'https://www.googleapis.com/oauth2/v4/token',
+			#	fields=form_fields)
+		except urlfetch.Error:
+			logging.exception('Caught exception fetching url')
 		
 		self.response.write('I got the code: ' + code_value)
 
