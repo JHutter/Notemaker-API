@@ -33,7 +33,7 @@ class MainPage(webapp2.RequestHandler):
 
 class OauthHandler(webapp2.RequestHandler):
 	def get(self):
-		self.response.write('I see the oauth page here')
+		//self.response.write('I see the oauth page here')
 		code_value = request.GET['code']
 		secret_value = request.GET['state']
 		
