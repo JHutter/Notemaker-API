@@ -57,7 +57,7 @@ class OauthHandler(webapp2.RequestHandler):
 			headers = {'Content-Type': 'application/json'}
 			result = fetch(
 				url = 'https://www.googleapis.com/oauth2/v4/token',
-				payload = form_data,
+				payload = form_fields,
 				method = POST,
 				headers = headers)
 			#self.response.write(result.content)
@@ -68,7 +68,7 @@ class OauthHandler(webapp2.RequestHandler):
 			#	'POST',
 			#	'https://www.googleapis.com/oauth2/v4/token',
 			#	fields=form_fields)
-		except Error:
+		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
 		
 		self.response.write('I got the code: ' + code_value)
