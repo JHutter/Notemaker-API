@@ -62,7 +62,7 @@ class OauthHandler(webapp2.RequestHandler):
 				method = urlfetch.POST,
 				headers = headers)
 			self.response.write(result.content)
-			#access_token = result.access_token
+			access_token = result.content.access_token
 			#bearer = result.token_type
 			#expires_in = result.expires_in
 			#id_token = result.id_token
