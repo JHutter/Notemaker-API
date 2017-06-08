@@ -14,7 +14,8 @@
 
 import webapp2
 from google.appengine.api import urlfetch
-
+import urllib
+import json
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -51,9 +52,9 @@ class OauthHandler(webapp2.RequestHandler):
 				'redirect_uri': 'https://oauth-assignment.appspot.com/oauth',
 				'grant_type': 'authorization_code'}
 			
-			# post_data = urllib.urlencode(UrlPostHandler.form_fields)
-			# headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-			# result = urlfetch.fetch(
+			post_data = urllib.urlencode(UrlPostHandler.form_fields)
+			headers = {'Content-Type': 'application/json'}
+			#result = urlfetch.fetch(
 			#	url = 'https://www.googleapis.com/oauth2/v4/token',
 			#	payload = form_data,
 			#	method = urlfetch.POST,
