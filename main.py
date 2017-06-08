@@ -57,7 +57,7 @@ class OauthHandler(webapp2.RequestHandler):
 			headers = {'Content-Type': 'application/json'}
 			result = urlfetch.fetch(
 				url = 'https://www.googleapis.com/oauth2/v4/token',
-				payload = form_fields,
+				payload = post_data,
 				method = urlfetch.POST,
 				headers = headers)
 			#self.response.write(result.content)
