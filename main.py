@@ -67,7 +67,7 @@ class OauthHandler(webapp2.RequestHandler):
 			#expires_in = result.expires_in
 			#id_token = result.id_token
 			
-			self.response.write('I got something back. ' + repr(result))
+			self.response.write('I got something back. ' + result.error)
 			
 			# source: http://urllib3.readthedocs.io/en/latest/user-guide.html
 			#r = http.request(
