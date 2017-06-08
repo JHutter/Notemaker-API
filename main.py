@@ -51,7 +51,8 @@ class OauthHandler(webapp2.RequestHandler):
 				'client_id': '171910885128-t2c20dlngoajvamvpasrs8m7e9bvgf1m.apps.googleusercontent.com',
 				'client_secret': 'u8WHIiKGuqiRxFu6leks8p83',
 				'redirect_uri': 'https://oauth-assignment.appspot.com/oauth',
-				'grant_type': 'authorization_code'}
+				'grant_type': 'authorization_code',
+				'access_type': 'offline'}
 			
 			post_data = urlencode(form_fields)
 			headers = {'Content-Type': 'application/x-www-form-urlencoded'}
