@@ -61,12 +61,12 @@ class OauthHandler(webapp2.RequestHandler):
 				method = urlfetch.POST,
 				headers = headers)
 			#self.response.write(result.content)
-			access_token = result.access_token
-			bearer = result.token_type
-			expires_in = result.expires_in
-			id_token = result.id_token
+			#access_token = result.access_token
+			#bearer = result.token_type
+			#expires_in = result.expires_in
+			#id_token = result.id_token
 			
-			self.response.write('I got the post back. access_token: ' + access_token)
+			self.response.write('I got something back. ' + repr(result))
 			
 			# source: http://urllib3.readthedocs.io/en/latest/user-guide.html
 			#r = http.request(
