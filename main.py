@@ -22,7 +22,7 @@ class MainPage(webapp2.RequestHandler):
 	redir = '&redirect_uri=https://oauth-assignment.appspot.com/oauth'
 	scope = '&scope=email'
 	response = '&response_type=code'
-	# put this in a more secure place if real production code
+	# put this in a more secret place if real production code
 	secret = '&state=u8WHIiKGuqiRxFu6leks8p83'
 	url = base + client_id + redir + scope + response + secret
 	jstext = '<script type="text/javascript"> document.getElementById("signinButton").addEventListener("click", function(){ window.location = encodeURI("' + url + '");});    </script>'
@@ -34,6 +34,10 @@ class MainPage(webapp2.RequestHandler):
 class OauthHandler(webapp2.RequestHandler):
 	def get(self):
 		self.response.write('I see the oauth page here')
+		code_value = request.GET['code']
+		secret_value = request.GET['state']
+		
+		self.response.write('I got the code: ' + code_value)
 
 
 app = webapp2.WSGIApplication([
