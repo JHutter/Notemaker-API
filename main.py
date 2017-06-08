@@ -13,9 +13,10 @@
 # limitations under the License.
 
 import webapp2
-from google.appengine.api import urlfetch
-import urllib
+# from google.appengine.api import urlfetch
+# import urllib
 import json
+import urllib3
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -52,8 +53,8 @@ class OauthHandler(webapp2.RequestHandler):
 				'redirect_uri': 'https://oauth-assignment.appspot.com/oauth',
 				'grant_type': 'authorization_code'}
 			
-			post_data = urllib.urlencode(UrlPostHandler.form_fields)
-			headers = {'Content-Type': 'application/json'}
+			#post_data = urllib.urlencode(UrlPostHandler.form_fields)
+			#headers = {'Content-Type': 'application/json'}
 			#result = urlfetch.fetch(
 			#	url = 'https://www.googleapis.com/oauth2/v4/token',
 			#	payload = form_data,
@@ -61,6 +62,12 @@ class OauthHandler(webapp2.RequestHandler):
 			#	headers = headers)
 			#self.response.write(result.content)
 			#self.response.write('I got the post back')
+			
+			# source: http://urllib3.readthedocs.io/en/latest/user-guide.html
+			r = http.request(
+				'POST',
+				'https://www.googleapis.com/oauth2/v4/token',
+				fields=form_fields)
 		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
 		
