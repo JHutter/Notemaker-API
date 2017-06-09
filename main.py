@@ -79,6 +79,7 @@ class OauthHandler(webapp2.RequestHandler):
 					else:
 						#name = usercontent
 						self.response.write('You aren\'t a google plus user, so you don\'t have a url for google plus')
+						self.response.write(result.content)
 				else:
 					self.response.write('Error: status code ' + result.status_code)
 			except urlfetch.Error:
