@@ -98,8 +98,8 @@ class OauthHandler(webapp2.RequestHandler):
 				#result = urlfetch.fetch(url + urlencode(form_fields))
 				result = urlfetch.fetch(url, headers=auth)
 				if result.status_code == 200:
-					self.response.write(result.content)
-					#usercontent = json.loads(result.content)
+					#self.response.write(result.content)
+					usercontent = json.loads(result.content)
 					if (usercontent['isPlusUser'] == true):
 						name = usercontent['displayName']
 						plusurl = usercontent['url']
