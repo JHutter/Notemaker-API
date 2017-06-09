@@ -11,18 +11,18 @@ import json
 class MainPage(webapp2.RequestHandler):
     def get(self):
         base = 'https://accounts.google.com/o/oauth2/v2/auth?'
-	client_id = 'client_id=171910885128-t2c20dlngoajvamvpasrs8m7e9bvgf1m.apps.googleusercontent.com'
-	redir = '&redirect_uri=https://oauth-assignment.appspot.com/oauth'
-	scope = '&scope=email'
-	response = '&response_type=code'
-	# put this in a more secret place if real production code
-	secret = '&state=u8WHIiKGuqiRxFu6leks8p83'
-	url = base + client_id + redir + scope + response + secret
-	jstext = '<script type="text/javascript"> document.getElementById("signinButton").addEventListener("click", function(){ window.location = encodeURI("' + url + '");});    </script>'
+		client_id = 'client_id=171910885128-t2c20dlngoajvamvpasrs8m7e9bvgf1m.apps.googleusercontent.com'
+		redir = '&redirect_uri=https://oauth-assignment.appspot.com/oauth'
+		scope = '&scope=email'
+		response = '&response_type=code'
+		# put this in a more secret place if real production code
+		secret = '&state=u8WHIiKGuqiRxFu6leks8p83'
+		url = base + client_id + redir + scope + response + secret
+		jstext = '<script type="text/javascript"> document.getElementById("signinButton").addEventListener("click", function(){ window.location = encodeURI("' + url + '");});    </script>'
 
-	# write the response
-	self.response.headers['Content-Type'] = 'text/html'
-    self.response.write('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>OAuth2.0 Assignment</title></head><body><p>Content?</p><button id="signinButton">Sign in with Google</button>' + jstext + '</body></html>');
+		# write the response
+		self.response.headers['Content-Type'] = 'text/html'
+        self.response.write('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>OAuth2.0 Assignment</title></head><body><p>Content?</p><button id="signinButton">Sign in with Google</button>' + jstext + '</body></html>');
 
 class OauthHandler(webapp2.RequestHandler):
 	def get(self):
