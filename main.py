@@ -75,7 +75,7 @@ class OauthHandler(webapp2.RequestHandler):
 						plusurl = usercontent['url']
 						# display to user
 						self.response.write('Hey, I know you. You\'re ' + name)
-						self.response.write('And your google plus url is ' + plusurl)
+						self.response.write('\nAnd your google plus url is ' + plusurl)
 					else:
 						#name = usercontent
 						self.response.write('You aren\'t a google plus user, so you don\'t have a url for google plus')
