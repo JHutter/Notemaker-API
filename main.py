@@ -70,6 +70,8 @@ class OauthHandler(webapp2.RequestHandler):
 			expires_in = jsonresults['expires_in']
 			id_token = jsonresults['id_token']
 			
+			self.response.write('access is ' + access_token)
+			
 			# now get stuff from google plus
 			# https://www.googleapis.com/auth/userinfo.email
 			# https://www.googleapis.com/auth/userinfo.profile
