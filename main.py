@@ -96,7 +96,7 @@ class OauthHandler(webapp2.RequestHandler):
 				auth = {'Authorization': 'Bearer ' + access_token}
 				#auth = urlencode({'Authorization': 'Bearer ' + access_token})
 				#result = urlfetch.fetch(url + urlencode(form_fields))
-				result = urlfetch.fetch(url, method=urlfetch.POST, headers=auth)
+				result = urlfetch.fetch(url, method=urlfetch.GET, headers=auth)
 				if result.status_code == 200:
 					self.response.write(result.content)
 				else:
