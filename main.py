@@ -22,13 +22,14 @@ class MainPage(webapp2.RequestHandler):
 
 	# write the response
 	self.response.headers['Content-Type'] = 'text/html'
-        self.response.write('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>OAuth2.0 Assignment</title></head><body><p>Content?</p><button id="signinButton">Sign in with Google</button>' + jstext + '</body></html>');
+    self.response.write('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>OAuth2.0 Assignment</title></head><body><p>Content?</p><button id="signinButton">Sign in with Google</button>' + jstext + '</body></html>');
 
 class OauthHandler(webapp2.RequestHandler):
 	def get(self):
 		# source: http://webapp2.readthedocs.io/en/latest/guide/request.html
 		code_value = self.request.get('code')
 		secret_value = self.request.get('status')
+		self.response.headers['Content-Type'] = 'text/plain'
 		
 		# compare to our secret?
 		
