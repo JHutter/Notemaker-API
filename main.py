@@ -62,16 +62,13 @@ class OauthHandler(webapp2.RequestHandler):
 				method = urlfetch.POST,
 				headers = headers)
 			
-			jsonresults = json.dumps(json.loads(result.content))
+			jsonresults = json.loads(result.content)
 			self.response.write(jsonresults)
 			
-			access_token = jsonresults.access_token
-			#self.response.write('I found the access code: ' + access_token)
-			#self.response.write(type(jsonresults))
-			#bearer = result.token_type
-			#expires_in = result.expires_in
-			#id_token = result.id_token
-			
+			access_token = jsonresults['access_token']
+			token_type = jsonresults['token_type']
+			expires_in = jsonresults['expires_in']
+			id_token = jsonresults['id_token']
 
 		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
