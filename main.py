@@ -81,7 +81,7 @@ class OauthHandler(webapp2.RequestHandler):
 				post_data = urlencode(form_fields)
 				headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + access_token}
 				result = urlfetch.fetch(
-					url = 'https://www.googleapis.com/auth/userinfo.profile',
+					url = 'https://www.googleapis.com/plus/v1/people/me',
 					payload = post_data,
 					method = urlfetch.POST,
 					headers = headers)
