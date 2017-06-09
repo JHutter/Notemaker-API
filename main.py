@@ -62,10 +62,14 @@ class OauthHandler(webapp2.RequestHandler):
 				method = urlfetch.POST,
 				headers = headers)
 			
-			jsonresults = json.loads(result.content)
+			jsonresults = json.dumps(json.loads(result.content))
 			self.response.write(result.content)
-			self.response.write('\n\njson.loads version is ' + jsonresults)
-			#access_token = jsonresults.access_token
+			self.response.write(jsonresults)
+			#self.response.write('\n\njson.loads version is ' + jsonresults)
+			
+			#access_token = jsonresults.'access_token'
+			#self.response.write('I found the access code: ' + access_token)
+			#self.response.write(type(jsonresults))
 			#bearer = result.token_type
 			#expires_in = result.expires_in
 			#id_token = result.id_token
@@ -80,7 +84,7 @@ class OauthHandler(webapp2.RequestHandler):
 		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
 		
-		self.response.write('I got the code: ' + code_value)
+		#self.response.write('I got the code: ' + code_value)
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
