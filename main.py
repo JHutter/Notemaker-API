@@ -87,7 +87,8 @@ class OauthHandler(webapp2.RequestHandler):
 					headers = headers)
 			
 				personresults = json.loads(result.content)
-				
+			except urlfetch.Error:
+				logging.exception('Caught exception fetching url')
 
 		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
