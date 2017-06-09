@@ -92,10 +92,11 @@ class OauthHandler(webapp2.RequestHandler):
 				# self.response.write(result.status_code)
 				
 				#url = 
-				urlencode(form_fields)
-				url = 'https://www.googleapis.com/auth/plus.login?'
-				auth = urlencode({'Authorization': 'Bearer ' + access_token})
-				result = urlfetch.fetch(url + urlencode(form_fields))
+				url = 'https://www.googleapis.com/plus/v1/people/me'
+				auth = {'Authorization': 'Bearer ' + access_token}
+				#auth = urlencode({'Authorization': 'Bearer ' + access_token})
+				#result = urlfetch.fetch(url + urlencode(form_fields))
+				result = urlfetch.request(url, method='GET', headers=auth)
 				if result.status_code == 200:
 					self.response.write(result.content)
 				else:
