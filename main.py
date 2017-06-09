@@ -63,24 +63,16 @@ class OauthHandler(webapp2.RequestHandler):
 				headers = headers)
 			
 			jsonresults = json.dumps(json.loads(result.content))
-			self.response.write(result.content)
 			self.response.write(jsonresults)
-			#self.response.write('\n\njson.loads version is ' + jsonresults)
 			
-			#access_token = jsonresults.'access_token'
+			access_token = jsonresults.access_token
 			#self.response.write('I found the access code: ' + access_token)
 			#self.response.write(type(jsonresults))
 			#bearer = result.token_type
 			#expires_in = result.expires_in
 			#id_token = result.id_token
 			
-			#self.response.write('I got something back. ' + result.error)
-			
-			# source: http://urllib3.readthedocs.io/en/latest/user-guide.html
-			#r = http.request(
-			#	'POST',
-			#	'https://www.googleapis.com/oauth2/v4/token',
-			#	fields=form_fields)
+
 		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
 		
