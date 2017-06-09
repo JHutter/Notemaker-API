@@ -1,22 +1,12 @@
-# Copyright 2016 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Project: OAuth2.0
+# 
+
+
 
 import webapp2
 from google.appengine.api import urlfetch
 from urllib import urlencode
 import json
-# import urllib3
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -62,43 +52,23 @@ class OauthHandler(webapp2.RequestHandler):
 				method = urlfetch.POST,
 				headers = headers)
 			
+			# parse the stuff we got
 			jsonresults = json.loads(result.content)
-			#self.response.write(jsonresults)
-			
 			access_token = jsonresults['access_token']
 			token_type = jsonresults['token_type']
 			expires_in = jsonresults['expires_in']
 			id_token = jsonresults['id_token']
 			
-			self.response.write('access is ' + access_token)
-			
-			# now get stuff from google plus
-			# https://www.googleapis.com/auth/userinfo.email
-			# https://www.googleapis.com/auth/userinfo.profile
+			# now get stuff from google plus, with token as header
 			try:
-				# post it there
-				form_fields = { 'userId': 'me'}
-			
-				# post_data = urlencode(form_fields)
-				# headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + access_token}
-				# result = urlfetch.fetch(
-					# url = 'https://www.googleapis.com/auth/plus.login',
-					# payload = post_data,
-					# method = urlfetch.POST,
-					# headers = headers)
-				
-				# self.response.write(repr(result))
-				# self.response.write("I apparently got here, maybe with data?")
-				# self.response.write(result.status_code)
-				
-				#url = 
+				# get it there
 				url = 'https://www.googleapis.com/plus/v1/people/me'
 				auth = {'Authorization': 'Bearer ' + access_token}
-				#auth = urlencode({'Authorization': 'Bearer ' + access_token})
-				#result = urlfetch.fetch(url + urlencode(form_fields))
+				
+				# check what we got back
 				result = urlfetch.fetch(url, headers=auth)
 				if result.status_code == 200:
-					#self.response.write(result.content)
+					# if the status code says we're good, process the result
 					usercontent = json.loads(result.content)
 					if (usercontent['isPlusUser'] == true):
 						name = usercontent['displayName']
@@ -106,19 +76,16 @@ class OauthHandler(webapp2.RequestHandler):
 						# display to user
 						self.response.write('Hey, I know you. You\'re ' + name)
 						self.response.write('And your google plus url is ' + plusurl)
+					else:
+						#name = usercontent
+						self.response.write('You aren\'t a google plus user, so you don\'t have a url for google plus')
 				else:
-					self.response.write(result.status_code)
-
-				
-				
-				#personresults = json.loads(result.content)
+					self.response.write('Error: status code ' + result.status_code)
 			except urlfetch.Error:
 				logging.exception('Caught exception fetching url')
-
 		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
 		
-		#self.response.write('I got the code: ' + code_value)
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
