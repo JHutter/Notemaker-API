@@ -88,7 +88,11 @@ class OauthHandler(webapp2.RequestHandler):
 				# self.response.write(repr(result))
 				# self.response.write("I apparently got here, maybe with data?")
 				
-				result = urlfetch.fetch('https://www.googleapis.com/plus/v1/people/me')
+				#url = 
+				#urlencode(form_fields)
+				url = 'https://www.googleapis.com/plus/v1/people/me?'
+				auth = urlencode({'Authorization': 'Bearer ' + access_token})
+				result = urlfetch.fetch(url + auth)
 				if result.status_code == 200:
 					self.response.write(result.content)
 				else:
