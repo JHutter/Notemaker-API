@@ -29,7 +29,7 @@ class OauthHandler(webapp2.RequestHandler):
 		# source: http://webapp2.readthedocs.io/en/latest/guide/request.html
 		code_value = self.request.get('code')
 		secret_value = self.request.get('status')
-		self.response.headers['Content-Type'] = 'text/plain'
+		#self.response.headers['Content-Type'] = 'text/plain'
 		
 		# compare to our secret?
 		
