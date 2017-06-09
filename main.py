@@ -79,27 +79,27 @@ class OauthHandler(webapp2.RequestHandler):
 				# post it there
 				form_fields = { 'userId': 'me'}
 			
-				post_data = urlencode(form_fields)
-				headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + access_token}
-				result = urlfetch.fetch(
-					url = 'https://www.googleapis.com/auth/plus.login',
-					payload = post_data,
-					method = urlfetch.POST,
-					headers = headers)
+				# post_data = urlencode(form_fields)
+				# headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + access_token}
+				# result = urlfetch.fetch(
+					# url = 'https://www.googleapis.com/auth/plus.login',
+					# payload = post_data,
+					# method = urlfetch.POST,
+					# headers = headers)
 				
-				self.response.write(repr(result))
-				self.response.write("I apparently got here, maybe with data?")
-				self.response.write(result.status_code)
+				# self.response.write(repr(result))
+				# self.response.write("I apparently got here, maybe with data?")
+				# self.response.write(result.status_code)
 				
 				#url = 
-				#urlencode(form_fields)
-				# url = 'https://www.googleapis.com/plus/v1/people/me?'
-				# auth = urlencode({'Authorization': 'Bearer ' + access_token})
-				# result = urlfetch.fetch(url + auth)
-				# if result.status_code == 200:
-					# self.response.write(result.content)
-				# else:
-					# self.response.write(result.status_code)
+				urlencode(form_fields)
+				url = 'https://www.googleapis.com/auth/plus.login?'
+				auth = urlencode({'Authorization': 'Bearer ' + access_token})
+				result = urlfetch.fetch(url + urlencode(form_fields))
+				if result.status_code == 200:
+					self.response.write(result.content)
+				else:
+					self.response.write(result.status_code)
 
 				
 				
