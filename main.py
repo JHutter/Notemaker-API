@@ -44,19 +44,15 @@ class OauthHandler(webapp2.RequestHandler):
 				'redirect_uri': 'https://oauth-assignment.appspot.com/oauth',
 				'grant_type': 'authorization_code',
 				'access_type': 'offline'}
-			
 			post_data = urlencode(form_fields)
 			headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 			result = urlfetch.fetch(url = 'https://www.googleapis.com/oauth2/v4/token', payload = post_data, method = urlfetch.POST, headers = headers)
-			
 			# parse the stuff we got
 			jsonresults = json.loads(result.content)
 			access_token = jsonresults['access_token']
 			token_type = jsonresults['token_type']
 			expires_in = jsonresults['expires_in']
 			id_token = jsonresults['id_token']
-			
-			
 			# now get stuff from google plus, with token as header
 			try:
 				# get it there
