@@ -63,12 +63,31 @@ class OauthHandler(webapp2.RequestHandler):
 				headers = headers)
 			
 			jsonresults = json.loads(result.content)
-			self.response.write(jsonresults)
+			#self.response.write(jsonresults)
 			
 			access_token = jsonresults['access_token']
 			token_type = jsonresults['token_type']
 			expires_in = jsonresults['expires_in']
 			id_token = jsonresults['id_token']
+			
+			# now get stuff from google plus
+			# https://www.googleapis.com/auth/userinfo.email
+			# https://www.googleapis.com/auth/userinfo.profile
+			try:
+				# post it there
+				form_fields = {
+					'userId': 'me'}
+			
+				post_data = urlencode(form_fields)
+				headers = {'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + access_token}
+				result = urlfetch.fetch(
+					url = 'https://www.googleapis.com/auth/userinfo.profile',
+					payload = post_data,
+					method = urlfetch.POST,
+					headers = headers)
+			
+				personresults = json.loads(result.content)
+				
 
 		except urlfetch.Error:
 			logging.exception('Caught exception fetching url')
