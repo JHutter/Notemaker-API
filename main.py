@@ -64,7 +64,7 @@ class OauthHandler(webapp2.RequestHandler):
 			
 			jsonresults = json.loads(result.content)
 			self.response.write(result.content)
-			self.repsonse.write('\n\njson.loads version is ' + jsonresults)
+			self.response.write('\n\njson.loads version is ' + jsonresults)
 			#access_token = jsonresults.access_token
 			#bearer = result.token_type
 			#expires_in = result.expires_in
