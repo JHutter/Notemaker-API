@@ -76,10 +76,12 @@ class OauthHandler(webapp2.RequestHandler):
 						# display to user
 						self.response.write('Hey, I know you. You\'re ' + name)
 						self.response.write('\nAnd your google plus url is ' + plusurl)
+						self.response.write('\n\nSecret ' + secret_value + ' used to get this information.')
 					else:
 						#name = usercontent
-						self.response.write('You aren\'t a google plus user, so you don\'t have a url for google plus')
-						self.response.write(result.content)
+						self.response.write('You aren\'t a google plus user, so you don\'t have a url for google plus, and I don\'t have your name.')
+						self.response.write('\n\nSecret ' + secret_value + ' used to get this information.')
+
 				else:
 					self.response.write('Error: status code ' + result.status_code)
 			except urlfetch.Error:
