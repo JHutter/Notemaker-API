@@ -70,7 +70,7 @@ class OauthHandler(webapp2.RequestHandler):
 				if result.status_code == 200:
 					# if the status code says we're good, process the result
 					usercontent = json.loads(result.content)
-					if (usercontent['isPlusUser'] == true):
+					if (usercontent['isPlusUser'] == True):
 						name = usercontent['displayName']
 						plusurl = usercontent['url']
 						# display to user
