@@ -85,8 +85,8 @@ class OauthHandler(webapp2.RequestHandler):
 					payload = post_data,
 					method = urlfetch.POST,
 					headers = headers)
-			
-				personresults = json.loads(result.content)
+				self.response.write("I apparently got here, maybe with data?")
+				#personresults = json.loads(result.content)
 			except urlfetch.Error:
 				logging.exception('Caught exception fetching url')
 
