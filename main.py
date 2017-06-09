@@ -99,6 +99,12 @@ class OauthHandler(webapp2.RequestHandler):
 				result = urlfetch.fetch(url, headers=auth)
 				if result.status_code == 200:
 					self.response.write(result.content)
+					#usercontent = json.loads(result.content)
+					name = usercontent['displayName']
+					plusurl = usercontent['url']
+					
+					# display to user
+					self.response.write('Hey, I know you. You\'re ' + name)
 				else:
 					self.response.write(result.status_code)
 
