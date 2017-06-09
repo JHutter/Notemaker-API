@@ -100,11 +100,12 @@ class OauthHandler(webapp2.RequestHandler):
 				if result.status_code == 200:
 					self.response.write(result.content)
 					#usercontent = json.loads(result.content)
-					name = usercontent['displayName']
-					plusurl = usercontent['url']
-					
-					# display to user
-					self.response.write('Hey, I know you. You\'re ' + name)
+					if (usercontent['isPlusUser'] == true):
+						name = usercontent['displayName']
+						plusurl = usercontent['url']
+						# display to user
+						self.response.write('Hey, I know you. You\'re ' + name)
+						self.response.write('And your google plus url is ' + plusurl)
 				else:
 					self.response.write(result.status_code)
 
