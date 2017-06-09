@@ -86,7 +86,7 @@ class OauthHandler(webapp2.RequestHandler):
 					method = urlfetch.POST,
 					headers = headers)
 				
-				self.response.write(reor(result))
+				self.response.write(repr(result))
 				self.response.write("I apparently got here, maybe with data?")
 				
 				
