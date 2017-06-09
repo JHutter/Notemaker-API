@@ -7,6 +7,7 @@ import webapp2
 from google.appengine.api import urlfetch
 from urllib import urlencode
 import json
+import logging
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
