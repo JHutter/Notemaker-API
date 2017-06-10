@@ -21,9 +21,6 @@ class RestPage(webapp2.RequestHandler):
 
 class ProfileIDPage(webapp2.RequestHandler):
     def get(self, profile_id):
-        self.response.write('Welcome...')
-        self.response.write('Profile ID: ')
-        self.response.write(profile_id)
         self.response.headers['Content-Type'] = 'application/json'   
         obj = {
           'success': profile_id, 
