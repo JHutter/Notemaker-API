@@ -3,5 +3,8 @@ api_version: 1
 threadsafe: false
 
 handlers:
+- url: /rest/.*
+  script: main.app
+
 - url: /.*
   script: oauth.app
