@@ -28,6 +28,6 @@ class ProfileIDPage(webapp2.RequestHandler):
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    ('/profiles/<profile_id>/testing', ProfileIDPage),
+    ('/profiles/<profile_id:(\d)>/testing', ProfileIDPage),
     (r'/.*', RestPage)
 ], debug=True)
