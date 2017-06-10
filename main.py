@@ -34,5 +34,5 @@ class ProfileListPage(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     (r'/profiles/<profile_id:\d+>', ProfileIDPage),
     (r'/profiles', ProfileListPage),
-    (r'/.*', RestPage)
+    (r'/', RestPage)
 ], debug=True)
