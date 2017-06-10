@@ -26,7 +26,7 @@ class ProfileIDPage(webapp2.RequestHandler):
           'success': profile_id, 
           'payload': 'some var',
         } 
-        self.response.status('403 Forbidden')
+        #self.response.status('403 Forbidden')
         self.response.out.write(json.dumps(obj))
         
 class ProfileListPage(webapp2.RequestHandler):
