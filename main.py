@@ -27,7 +27,7 @@ class ProfileIDPage(webapp2.RequestHandler):
           'payload': 'some var',
         } 
         self.response.status_int(403)
-        self.response.write(json.dumps(obj))
+        self.response.out.write(json.dumps(obj))
         
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
