@@ -22,7 +22,7 @@ class RestPage(webapp2.RequestHandler):
 class ProfileIDPage(webapp2.RequestHandler):
     def get(self):
         self.response.write('Welcome...')
-        self.response.write('Profile ID, ' + profile_id)
+        self.response.write('Profile ID')
         
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
@@ -32,7 +32,7 @@ class ProfileListPage(webapp2.RequestHandler):
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    (r'/rest/profiles/<profile_id>', ProfileIDPage),
+    (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
     (r'/rest.*', RestPage)
 ], debug=True)
