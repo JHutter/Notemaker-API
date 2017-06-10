@@ -21,7 +21,7 @@ class RestPage(webapp2.RequestHandler):
 
 class ProfileIDPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Welcome...')
+        self.response.write('Welcome...', profile_id)
         self.response.write('Profile ID, ' + profile_id)
 
         
