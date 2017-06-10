@@ -99,6 +99,6 @@ class OauthHandler(webapp2.RequestHandler):
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    ('/oauth', OauthHandler),
+    (r'/oauth', OauthHandler),
     (r'/.*', MainPage)
 ], debug=True)
