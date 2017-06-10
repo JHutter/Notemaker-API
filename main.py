@@ -14,7 +14,7 @@ client = '387463041973-2j1noh0p0danoujlobm20q9378375b0n.apps.googleusercontent.c
 secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g'
 oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 
-class MainPage(webapp2.RequestHandler):
+class RestPage(webapp2.RequestHandler):
     def get(self):
         self.response.write('yes, url handler is going fine')
 
@@ -23,5 +23,5 @@ class MainPage(webapp2.RequestHandler):
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    ('/rest', MainPage)
+    ('/rest', RestPage)
 ], debug=True)
