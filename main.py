@@ -20,13 +20,15 @@ class RestPage(webapp2.RequestHandler):
         self.response.out.write('Profile ID, ' + profile_id)
         
 
-class 
-
+class ProfileIDPage(webapp2.RequestHandler):
+    def get(self):
+        self.response.write('Welcome...')
+        self.response.out.write('Profile ID, ' + profile_id)
 
         
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    ('/profiles/<profile_id:([0-9]{1,8})>', Profiles),
+    ('/profiles/<profile_id:([0-9]{1,8})>', ProfileIDPage),
     (r'/.*', RestPage)
 ], debug=True)
