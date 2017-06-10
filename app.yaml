@@ -2,6 +2,7 @@ runtime: python27
 api_version: 1
 threadsafe: false
 
+# https://stackoverflow.com/questions/15954482/google-app-engine-python-app-yaml-urlhandler-doesnt-work
 handlers:
 - url: /rest/.*
   script: main.app

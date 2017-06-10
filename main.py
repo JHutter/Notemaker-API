@@ -16,12 +16,17 @@ oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 
 class RestPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('yes, url handler is going fine')
+        self.response.write('Welcome...')
+        self.response.out.write('Profile ID, ' + profile_id)
+        
+
+class 
 
 
         
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
+    ('/profiles/<profile_id:([0-9]{1,8})>', Profiles),
     (r'/.*', RestPage)
 ], debug=True)
