@@ -24,6 +24,12 @@ class ProfileIDPage(webapp2.RequestHandler):
         self.response.write('Welcome...')
         self.response.write('Profile ID: ')
         self.response.write(profile_id)
+        self.response.headers['Content-Type'] = 'application/json'   
+        obj = {
+          'success': 'some var', 
+          'payload': 'some var',
+        } 
+        self.response.out.write(json.dumps(obj))
         
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
