@@ -9,6 +9,7 @@ from google.appengine.api import urlfetch
 from urllib import urlencode
 import json
 import logging
+from google.appengine.ext import ndb
 
 client = '387463041973-2j1noh0p0danoujlobm20q9378375b0n.apps.googleusercontent.com'
 secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g'
@@ -21,13 +22,12 @@ class RestPage(webapp2.RequestHandler):
 
 class ProfileIDPage(webapp2.RequestHandler):
     def get(self, profile_id):
-        #self.response.headers['Content-Type'] = 'application/json'   
+        self.response.headers['Content-Type'] = 'application/json'   
         obj = {
           'success': profile_id, 
           'payload': 'some var',
         } 
-        self.response.status('403 Forbidden')
-        # self.response.out.write(json.dumps(obj))
+        self.response.out.write(json.dumps(obj))
         
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
