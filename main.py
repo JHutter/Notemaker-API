@@ -23,5 +23,5 @@ class MainPage(webapp2.RequestHandler):
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    ('/', MainPage)
+    ('/rest', MainPage)
 ], debug=True)
