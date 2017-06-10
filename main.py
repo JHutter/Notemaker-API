@@ -65,16 +65,17 @@ class OauthHandler(webapp2.RequestHandler):
                 self.response.write(jsonresults)
                 
                 # now get stuff from google plus, with token as header
-                # try:
-                    # # get it there
-                    # url = 'https://www.googleapis.com/plus/v1/people/me'
-                    # auth = {'Authorization': 'Bearer ' + access_token}
+                try:
+                    # get it there
+                    url = 'https://www.googleapis.com/plus/v1/people/me'
+                    auth = {'Authorization': 'Bearer ' + access_token}
                     
-                    # # check what we got back
-                    # result = urlfetch.fetch(url, headers=auth)
-                    # if result.status_code == 200:
-                        # # if the status code says we're good, process the result
-                        # usercontent = json.loads(result.content)
+                    # check what we got back
+                    result = urlfetch.fetch(url, headers=auth)
+                    if result.status_code == 200:
+                        # if the status code says we're good, process the result
+                        usercontent = json.loads(result.content)
+                        self.write(usercontent)
                         # if (usercontent['isPlusUser'] == True):
                             # name = usercontent['displayName']
                             # plusurl = usercontent['url']
@@ -87,10 +88,10 @@ class OauthHandler(webapp2.RequestHandler):
                             # self.response.write('You aren\'t a google plus user, so you don\'t have a url for google plus, and I don\'t have your name.')
                             # self.response.write('\n\nSecret ' + secret_value + ' used to get this information.')
 
-                    # else:
-                        # self.response.write('Error: status code ' + result.status_code)
-                # except urlfetch.Error:
-                    # logging.exception('Caught exception fetching url')
+                    else:
+                        self.response.write('Error: status code ' + result.status_code)
+                except urlfetch.Error:
+                    logging.exception('Caught exception fetching url')
             except urlfetch.Error:
                 logging.exception('Caught exception fetching url')
         
