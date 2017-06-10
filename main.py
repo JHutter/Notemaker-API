@@ -32,7 +32,7 @@ class ProfileListPage(webapp2.RequestHandler):
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    (r'/profiles/<profile_id:\w+>', handler=ProfileIDPage),
-    (r'/profiles', handler=ProfileListPage),
+    (r'/profiles/<profile_id:\w+>', ProfileIDPage),
+    (r'/profiles', ProfileListPage),
     (r'/.*', RestPage)
 ], debug=True)
