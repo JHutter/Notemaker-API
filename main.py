@@ -16,13 +16,13 @@ oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 
 class RestPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Welcome...')
+        self.response.write('You\'re at the splash page')
         
 
 class ProfileIDPage(webapp2.RequestHandler):
     def get(self):
         self.response.write('Welcome...')
-        self.response.out.write('Profile ID, ' + profile_id)
+        self.response.write('Profile ID, ' + profile_id)
 
         
 
