@@ -16,7 +16,7 @@ oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 
 class RestPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('You\'re at the splash page')
+        self.response.write('You shouldn\'t be here...')
         
 
 class ProfileIDPage(webapp2.RequestHandler):
@@ -32,7 +32,7 @@ class ProfileListPage(webapp2.RequestHandler):
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    (r'/profiles/<profile_id>', ProfileIDPage),
+    (r'/profiles/<profile_id:\w+>', ProfileIDPage),
     (r'/profiles', ProfileListPage),
     (r'/.*', RestPage)
 ], debug=True)
