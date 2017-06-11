@@ -100,7 +100,7 @@ class ProfileListPage(webapp2.RequestHandler):
             feeling = self.request.get('feeling', default_value=' ')
             bio = self.request.get('bio', default_value='somebody')
             
-            if (Profile.query(userid == user_id)): # trying to keep a uniqueness constraint here, even tho ndb doesn't support them
+            if (Profile.query(Profile.userid == user_id)): # trying to keep a uniqueness constraint here, even tho ndb doesn't support them
                 #no don't add
                 self.response.write('user already exists')
                 status = '409 Conflict'
