@@ -26,11 +26,11 @@ class Profile(ndb.Model):
     handle = ndb.StringProperty()
     feeling = ndb.StringProperty()
     bio = ndb.StringProperty()
-    notes = ndb.KeyProperty(kind=Note, repeated=True)
+    notes = ndb.KeyProperty(kind='Note', repeated=True)
 
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
-    owner = ndb.KeyProperty(kind=Profile)
+    owner = ndb.KeyProperty(kind='Profile')
     noteid = ndb.IntegerProperty()
     title = ndb.StringProperty()
     content = ndb.StringProperty()
