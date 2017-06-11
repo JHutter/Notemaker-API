@@ -81,7 +81,7 @@ class ProfileListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
         query = Profile.query()
-        line = query.get()
+        #line = query.get()
         results = []
         
         for line in query.fetch()
