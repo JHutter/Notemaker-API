@@ -76,7 +76,7 @@ class ProfileIDPage(webapp2.RequestHandler):
         try:
             # get auth, compare userid
             header = self.request.headers['Authorization']
-            getID = getUserId(token)
+            getID = getUserId(header)
             if (getID == 'None' or getID == 'Error'):
                 auth = False
             else:
@@ -91,7 +91,7 @@ class ProfileIDPage(webapp2.RequestHandler):
             queryF = Profile.query(Profile.userid == profile_id).fetch()
             self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in queryF]}))
         else: 
-            queryF = Profile.query(Profile.userid == profile_id).fetch()
+            queryF = Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio)
             self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in queryF]}))
             #self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
      
