@@ -102,6 +102,7 @@ class ProfileIDPage(webapp2.RequestHandler):
             header = self.request.headers('Authorization')
             auth = validateUserId(profile_id, header)
         except (KeyError, AttributeError):
+            self.response.write('Blar, need auth')
             auth = False
         handle = self.request.get('handle', default_value='same')
         self.response.write(auth)
