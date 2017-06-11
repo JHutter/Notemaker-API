@@ -31,6 +31,33 @@ class Note(ndb.Model):
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
 
+# auth wrappers
+# get user id: send req to google to trade token for user id
+def getUserId(token):
+    userid = 0
+    try:
+        # get it there
+        url = 'https://www.googleapis.com/plus/v1/people/me'
+        auth = {'Authorization': 'Bearer ' + access_token}
+        
+        # check what we got back
+        result = urlfetch.fetch(url, headers=auth)
+        if result.status_code == 200:
+            # if the status code says we're good, process the result
+            usercontent = json.loads(result.content)
+            if (usercontent['isPlusUser'] == True):
+                userid = usercontent['id']
+        else:
+            userid = -1
+    except urlfetch.Error:
+        userid = -1
+    return user_id
+    
+# validateUserId, 
+# send req to google with token, see if resulting g+ id matches what was passed to us by user originally
+def validateUserId(id, token):
+    
+    return True
 
 
 class RestPage(webapp2.RequestHandler):
@@ -53,9 +80,18 @@ class ProfileListPage(webapp2.RequestHandler):
         
     def post(self):
         header = self.request.headers['Authorization']
+        if (header.length > 8):
+            token = header[7:] # They sent us 'Bearer '
+            userid = getUserId(token)
+            self.response.write(userid)
+            
+            
+        else: # we know the token is no good, too short
+            self.response.write('invalid token')
+        #getUserId(token)
         #profile = Profile(userid=0, handle='jojo', feeling='content', bio='just another rando on the internet')
         #profile.put()
-        self.response.write(header)
+        #self.response.write(header)
 
         
 
