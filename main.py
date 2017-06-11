@@ -21,6 +21,7 @@ lastNoteNum = 0 # in production code where app.yaml has threading, use a mutex h
 
 # ndb entities, four properies each, with a one-to-many relationship (profile can have any number of notes)
 # source: https://cloud.google.com/appengine/articles/modeling
+# source: https://stackoverflow.com/questions/10077300/one-to-many-example-in-ndb
 class Profile(ndb.Model):
     userid = ndb.StringProperty()
     handle = ndb.StringProperty()
@@ -236,39 +237,39 @@ class NotesListPage(webapp2.RequestHandler):
     def post(self):
         self.response.write(self.request.headers)
         
-        try:
-            #header = self.request.environ['HTTP_AUTHORIZATION']
-            header = self.request.headers['Authorization']
-            userid = getUserId(header)
-            
-            if (userid == 'Error' or userid == 'None'):
-                # bad userId or auth
-                status = '403 Forbidden'
-                message = 'invalid authorization'
-                note = {}
-                auth = False
+        # try:
+        #header = self.request.environ['HTTP_AUTHORIZATION']
+        header = self.request.headers['Authorization']
+        userid = getUserId(header)
+        
+        if (userid == 'Error' or userid == 'None'):
+            # bad userId or auth
+            status = '403 Forbidden'
+            message = 'invalid authorization'
+            note = {}
+            auth = False
+        else:
+            auth = True
+            query = Profile.query(Profile.userid == userid).get()
+            if (query is not None):
+                keyid = query.get().name
+                note_id = lastNoteNum
+                lastNoteNum += 1
+                #owner = keyid
+                title = self.request.get('title', default_value='untitled')
+                content = self.request.get('content', default_value='[empty]')
+                date_added = datetime.date.today()
+                visible = self.request.get('visible', default_value='False')
+                
+                newNote = Note(noteid=note_id, owner=keyid, title=title, content=content, date_added=date_added, visible=visible)
+                #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
+                newNote.put()
+                
+                
             else:
-                auth = True
-                query = Profile.query(Profile.userid == userid).get()
-                if (query is not None):
-                    keyid = query.get().name
-                    note_id = lastNoteNum
-                    lastNoteNum += 1
-                    #owner = keyid
-                    title = self.request.get('title', default_value='untitled')
-                    content = self.request.get('content', default_value='[empty]')
-                    date_added = datetime.date.today()
-                    visible = self.request.get('visible', default_value='False')
-                    
-                    newNote = Note(noteid=note_id, owner=keyid, title=title, content=content, date_added=date_added, visible=visible)
-                    #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
-                    newNote.put()
-                    
-                    
-                else:
-                    status = '404 Not Found'
-                    message = 'no matching profile for authorization given'
-                    note = {}
+                status = '404 Not Found'
+                message = 'no matching profile for authorization given'
+                note = {}
                 
                 
             
