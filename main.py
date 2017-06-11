@@ -84,7 +84,7 @@ class ProfileListPage(webapp2.RequestHandler):
         all = query.fetch()
         results = []
         
-        if (for line in all):
+        for line in all:
             self.response.write(line)
         self.response.out.write(json.dumps({'profiles': results}))
         
