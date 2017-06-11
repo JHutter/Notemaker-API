@@ -32,6 +32,7 @@ class Profile(ndb.Model):
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
     owner = ndb.KeyProperty(kind='Profile')
+    noteid = ndb.StringProperty()
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
@@ -68,9 +69,12 @@ def validateUserId(id, token):
         return True
     return False
 
-def getNextNoteNum(lastNoteNum):
-    lastNoteNum += 1
-    return lastNoteNum
+class AutoIncrement():
+    lastNoteNum = 0
+    
+    def getNextAutoInc(self):
+        self.lastNoteNum += 1
+        return lastNoteNum
     
 class RestPage(webapp2.RequestHandler):
     def get(self):
@@ -260,13 +264,15 @@ class NotesListPage(webapp2.RequestHandler):
                 content = self.request.get('content', default_value='[empty]')
                 date_added = datetime.date.today()
                 visible = self.request.get('visible', default_value='False')
+                noteid = AutoIncrement.getNextAutoInc()
                 
-                newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'))
+                newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'), noteid=noteid)
                 #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
-                newNote.put()
+                newKey = newNote.put()
                 status = '201 Created'
                 message = 'note created'
                 note = {'id':keyid.urlsafe(), 'title': title, 'content': content, 'date_added': str(date_added), 'visible':visible}
+                self.response.write(newKey.urlsale())
                 
             else:
                 status = '404 Not Found'
