@@ -158,7 +158,7 @@ class NotesPage(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'  
         # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
         self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visibile == True).fetch()]}))
-)
+
         
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
