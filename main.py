@@ -87,8 +87,8 @@ class ProfileListPage(webapp2.RequestHandler):
             #self.response.write(userid)
             
             # get info sent in request
-            # handle = self.request.post['handle']
-            handle = 'whatever'
+            handle = self.request.post['handle']
+            # handle = 'whatever'
             # feeling = self.request.post['feeling']
             feeling = 'apathetic'
             # bio = self.request.post['bio']
