@@ -235,7 +235,7 @@ class NotesListPage(webapp2.RequestHandler):
         
     def post(self):
         try:
-            header = self.request.headers['Authorization']
+            header = self.request.environ['HTTP_AUTHORIZATION']
             userid = getUserId(header)
             
             if (userid == 'Error' or userid == 'None'):
