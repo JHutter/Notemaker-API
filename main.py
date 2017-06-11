@@ -52,7 +52,7 @@ class ProfileListPage(webapp2.RequestHandler):
         self.response.write('List profiles here')
         
     def post(self):
-        header = self.request.POST['Authorization']
+        header = self.request.headers['Authorization']
         #profile = Profile(userid=0, handle='jojo', feeling='content', bio='just another rando on the internet')
         #profile.put()
         self.response.write(header)
