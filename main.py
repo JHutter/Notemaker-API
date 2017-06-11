@@ -108,6 +108,7 @@ class ProfileListPage(webapp2.RequestHandler):
                 user = {}
                 
             else:
+                self.response.write('created')
                 newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
                 newProfile.put()
                 status = '201 Created'
@@ -116,6 +117,7 @@ class ProfileListPage(webapp2.RequestHandler):
                         'handle': handle,
                         'feeling': feeling,
                         'bio': bio}
+                
         
         except AttributeError:
             status = '401 Unauthorized'
