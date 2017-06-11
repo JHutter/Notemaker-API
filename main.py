@@ -123,7 +123,7 @@ class ProfileListPage(webapp2.RequestHandler):
         except:
             status = '403 Forbidden'
             message = 'invalid authorization'
-            user = {self.request.POST}
+            user = {}
             
         # return result to user
         response = {'status': status,
