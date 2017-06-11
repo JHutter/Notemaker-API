@@ -79,7 +79,7 @@ class ProfileIDPage(webapp2.RequestHandler):
         
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('List profiles here')
+        self.response.write('List profiles here ')
         
     def post(self):
         self.response.headers['Content-Type'] = 'application/json'  
