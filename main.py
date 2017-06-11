@@ -99,13 +99,14 @@ class ProfileIDPage(webapp2.RequestHandler):
     def put(self, profile_id):
         self.response.write('you putted me')
         try:
-            header = self.request.headers('HTTP AUTHORIZATION')
+            header = self.request.headers('Authorization')
             auth = validateUserId(profile_id, header)
         except (KeyError, AttributeError):
             self.response.write('Blar, need auth')
             auth = False
         handle = self.request.get('handle', default_value='same')
         self.response.write(auth)
+        self.response.write(self.request.body)
         
     def delete(self, profile_id):
         self.response.write('you deleted me')
