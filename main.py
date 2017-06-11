@@ -32,7 +32,6 @@ class Profile(ndb.Model):
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
     owner = ndb.KeyProperty(kind='Profile')
-    noteid = ndb.IntegerProperty()
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
@@ -256,7 +255,7 @@ class NotesListPage(webapp2.RequestHandler):
             query = Profile.query(Profile.userid == userid).get()
             if (query is not None):
                 keyid = query.key
-                note_id = getNextNoteNum(lastNoteNum)
+                # note_id = getNextNoteNum(lastNoteNum)
                 #lastNoteNum += 1
                 #owner = keyid
                 title = self.request.get('title', default_value='untitled')
@@ -264,7 +263,7 @@ class NotesListPage(webapp2.RequestHandler):
                 date_added = datetime.date.today()
                 visible = self.request.get('visible', default_value='False')
                 
-                newNote = Note(noteid=note_id, owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'))
+                newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'))
                 #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
                 newNote.put()
                 
