@@ -49,7 +49,7 @@ def getUserId(token):
             if (usercontent['isPlusUser'] == True):
                 userid = usercontent['id']
         else:
-            userid = -1
+            userid = result.status_code
     except urlfetch.Error:
         userid = -1
     return userid
@@ -134,6 +134,7 @@ class ProfileListPage(webapp2.RequestHandler):
                     'message': message,
                     'user': user}
         self.response.out.write(json.dumps(response))
+        self.response.out.write(user_id)
         
 class ResetDB(webapp2.RequestHandler):
     def get(self):
