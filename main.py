@@ -12,10 +12,12 @@ import json
 import logging
 from google.appengine.ext import ndb
 from google.appengine.datastore.datastore_query import Cursor
+import datetime
 
 client = '387463041973-2j1noh0p0danoujlobm20q9378375b0n.apps.googleusercontent.com'
 secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g'
 oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
+lastNoteNum = 0 # in production code where app.yaml has threading, use a mutex here to avoid a race condition.
 
 # ndb entities, four properies each, with a one-to-many relationship (profile can have any number of notes)
 # source: https://cloud.google.com/appengine/articles/modeling
@@ -28,10 +30,11 @@ class Profile(ndb.Model):
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
     owner = ndb.KeyProperty(kind=Profile)
+    noteid = ndb.IntegerProperty()
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
-    visibile = ndb.BooleanProperty()
+    visible = ndb.BooleanProperty()
 
     
 # auth wrappers
@@ -191,13 +194,11 @@ class ProfileListPage(webapp2.RequestHandler):
             query = Profile.query(Profile.userid == user_id)
             if (query.get() is not None): # trying to keep a uniqueness constraint here, even tho ndb doesn't support them
                 #no don't add
-                self.response.write('user already exists')
                 status = '409 Conflict'
                 message = 'profile already exists for this user'
                 user = {}
                 
             else:
-                self.response.write('created')
                 newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
                 newProfile.put()
                 status = '201 Created'
@@ -225,11 +226,57 @@ class ProfileListPage(webapp2.RequestHandler):
         self.response.out.write(json.dumps(response))
         
 # get all visible notes
-class NotesPage(webapp2.RequestHandler):
+class NotesListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
         # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
-        self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visibile == True).fetch()]}))
+        self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visible == True).fetch()]})) 
+        
+    def post(self):
+        try:
+            authorization = self.request.headers['Authorization']
+            userid = getUserId(authorization)
+            
+            if (userid == 'Error' or userid == 'None'):
+                # bad userId or auth
+                status = '403 Forbidden'
+                message = 'invalid authorization'
+                note = {}
+                auth = False
+            else:
+                auth = True
+                query = Profile.query(Profile.userid == userid).get()
+                if (query is not None):
+                    keyid = query.key()
+                    note_id = lastNoteNum
+                    lastNoteNum += 1
+                    title = self.request.get('title', default_value='untitled')
+                    content = self.request.get('content', default_value='[empty]')
+                    date_added = datetime.date.today()
+                    visible = self.request.get('visible', default_value='False')
+                    
+                    newNote = Note(noteid=note_id, owner=keyid, title=title, content=content, date_added=date_added, visible=visible)
+                    #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
+                    newNote.put()
+                    
+                    
+                else:
+                    status = '404 Not Found'
+                    message = 'no matching profile for authorization given'
+                    note = {}
+                
+                
+            
+        except (KeyError, AttributeError):
+            status = '401 Unauthorized'
+            message = 'no authorization included'
+            note = {}
+            
+            
+        self.response.out.write(json.dumps({'status': status, 'message': 'note': note}))
+        
+       
+        
 
 # source: https://stackoverflow.com/questions/16280496/patch-method-handler-on-google-appengine-webapp2
 allowed_methods = webapp2.WSGIApplication.allowed_methods
@@ -238,7 +285,8 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    (r'/rest/notes', NotesPage),
+    (r'/rest/profiles/(\d+)/notes', NotesListPage),
+    (r'/rest/notes', NotesListPage),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
     (r'/rest.*', RestPage)

@@ -17,3 +17,4 @@ indexes:
   - name: content
   - name: date_added
   - name: visible
+  - name: noteid
