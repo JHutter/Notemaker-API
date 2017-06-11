@@ -249,9 +249,7 @@ class NotesListPage(webapp2.RequestHandler):
             status = '403 Forbidden'
             message = 'invalid authorization'
             note = {}
-            auth = False
         else:
-            auth = True
             query = Profile.query(Profile.userid == userid).get()
             if (query is not None):
                 keyid = query.key
@@ -266,7 +264,9 @@ class NotesListPage(webapp2.RequestHandler):
                 newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'))
                 #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
                 newNote.put()
-                
+                status = '201 Created'
+                message = 'note created'
+                note = {'id':keyid.urlsafe(), 'title': title, 'content': content, 'date_added': date_added, 'visible':visible}
                 
             else:
                 status = '404 Not Found'
