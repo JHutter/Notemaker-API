@@ -123,6 +123,7 @@ class ProfileListPage(webapp2.RequestHandler):
         except AttributeError:
             status = '401 Unauthorized'
             message = 'no authorization included'
+            user_id = -1
             user = {}
 
         # except:
