@@ -79,15 +79,22 @@ class ProfileIDPage(webapp2.RequestHandler):
         
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write('List profiles here ')
+        self.response.headers['Content-Type'] = 'application/json'  
+        query = Profile.query()
+        line = query.get()
+        results = []
+        
+        while (line is not None):
+            results.append(line)
+            line = query.get()
+        
+        self.response.out.write(json.dumps(results))
         
     def post(self):
         self.response.headers['Content-Type'] = 'application/json'  
         try:        # source: https://stackoverflow.com/questions/610883/how-to-know-if-an-object-has-an-attribute-in-python/610923#610923
             header = self.request.headers['Authorization']
             user_id = getUserId(header)
-            self.response.write(header)
-            self.response.write(user_id)
             
             if (user_id == 'Error' or user_id == 'None'):
                 raise Exception
@@ -117,7 +124,6 @@ class ProfileListPage(webapp2.RequestHandler):
                         'feeling': feeling,
                         'bio': bio}
                 
-        
         except KeyError:
             status = '401 Unauthorized'
             message = 'no authorization included'
@@ -134,7 +140,6 @@ class ProfileListPage(webapp2.RequestHandler):
                     'message': message,
                     'user': user}
         self.response.out.write(json.dumps(response))
-        self.response.out.write(user_id)
         
 class ResetDB(webapp2.RequestHandler):
     def get(self):
