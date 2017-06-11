@@ -71,7 +71,10 @@ def validateUserId(id, token):
 
 def getNextNoteNum():
     global lastNoteNum
-    lastNoteNum += 1
+    if (lastNoteNum is None):
+        lastNoteNum = 0
+    else:
+        lastNoteNum += 1
     return lastNoteNum
     
 class RestPage(webapp2.RequestHandler):
