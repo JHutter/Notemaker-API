@@ -92,7 +92,7 @@ class ProfileIDPage(webapp2.RequestHandler):
         if (query.get() is None):
             self.response.out.write(json.dumps({'profiles':[]}))
         elif (auth): 
-            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query().fetch()]}))
+            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch()]}))
         else:    
             lines = Profile.query(Profile.userid == profile_id).iter()
             jsonline = []
