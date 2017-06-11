@@ -1,0 +1,16 @@
+indexes:
+
+- kind: Profile
+  ancestor: no
+  properties:
+  - name: handle
+  - name: bio
+  - name: feeling
+
+- kind: Note
+  properties:
+  - name: owner
+  - name: title
+  - name: content
+  - name: date_added
+  - name: visible
