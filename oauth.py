@@ -97,7 +97,10 @@ class OauthHandler(webapp2.RequestHandler):
             except urlfetch.Error:
                 logging.exception('Caught exception fetching url')
         
-
+allowed_methods = webapp2.WSGIApplication.allowed_methods
+new_allowed_methods = allowed_methods.union(('PATCH',))
+webapp2.WSGIApplication.allowed_methods = new_allowed_methods
+        
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
     (r'/oauth', OauthHandler),
