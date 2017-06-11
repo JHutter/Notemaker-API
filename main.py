@@ -84,6 +84,8 @@ class ProfileListPage(webapp2.RequestHandler):
     def post(self):
         self.response.headers['Content-Type'] = 'application/json'  
         try:        # source: https://stackoverflow.com/questions/610883/how-to-know-if-an-object-has-an-attribute-in-python/610923#610923
+            if (not hasattr(self.request.headers, 'Authorization')):
+                raise AttributeError
             header = self.request.headers['Authorization']
             user_id = getUserId(header)
             
@@ -113,7 +115,7 @@ class ProfileListPage(webapp2.RequestHandler):
                         'bio': bio}
         
         except AttributeError:
-            self.response.write('error')
+            #self.response.write('error')
             
             if (not hasattr(self.request.headers, 'Authorization')):
                 status = '401 Unauthorized'
