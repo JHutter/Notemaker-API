@@ -56,8 +56,10 @@ def getUserId(token):
 # validateUserId, 
 # send req to google with token, see if resulting g+ id matches what was passed to us by user originally
 def validateUserId(id, token):
-    
-    return True
+    google_userid = getUserId(token)
+    if (id == google_userid):
+        return True
+    return False
 
 
 class RestPage(webapp2.RequestHandler):
