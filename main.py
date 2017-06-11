@@ -31,7 +31,7 @@ class Note(ndb.Model):
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
-    visibile = ndb.BoolProperty()
+    visibile = ndb.BooleanProperty()
 
     
 # auth wrappers
