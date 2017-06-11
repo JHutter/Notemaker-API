@@ -118,11 +118,14 @@ class ProfileIDPage(webapp2.RequestHandler):
         if (not auth):
             status = '401 Unauthorized'
             message = 'no authorization included'
-            user = {}
+            
         else:
             prof = Profile.query(Profile.userid == profile_id).get()
             prof.key.delete()
-        
+            status = ' 200 OK'
+            message = 'profile deleted'
+            
+        self.response.out.write(json.dumps({'status': status, 'message': message}))
      
 # GET: all profiles
 # POST:      
