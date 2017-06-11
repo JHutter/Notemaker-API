@@ -81,19 +81,23 @@ class ProfileListPage(webapp2.RequestHandler):
         self.response.write('List profiles here')
         
     def post(self):
-        header = self.request.headers['Authorization']
-        if (len(header) > 8):
-            token = header[7:] # They sent us 'Bearer '
+        try:        # source: https://stackoverflow.com/questions/610883/how-to-know-if-an-object-has-an-attribute-in-python/610923#610923
+            header = self.request.headers['Authorization']
             userid = getUserId(header)
-            self.response.write(userid)
+            #self.response.write(userid)
             
+            # get info sent in request
+            handle = self.request.post['handle']
+            feeling = self.request.post['feeling']
+            bio = self.request.post['bio']
             
-        else: # we know the token is no good, too short
-            self.response.write('invalid token')
-        #getUserId(token)
-        #profile = Profile(userid=0, handle='jojo', feeling='content', bio='just another rando on the internet')
-        #profile.put()
-        #self.response.write(header)
+            newProfile = Profile(id=userid, handle=handle, feeling=feeling, bio=bio)
+            newProfile.put()
+        except AttributeError:
+            self.response.write('error')
+            # return error message to user
+        
+
 
         
 
