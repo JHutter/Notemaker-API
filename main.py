@@ -85,6 +85,7 @@ class ProfileListPage(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'  
         try:        # source: https://stackoverflow.com/questions/610883/how-to-know-if-an-object-has-an-attribute-in-python/610923#610923
             if ('Authorization' not in self.request.headers):   #source: https://groups.google.com/forum/#!topic/google-appengine/h-NlJm3mZx8
+                self.response.write('auth not in header')
                 raise AttributeError
             
             header = self.request.headers['Authorization']
