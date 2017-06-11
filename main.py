@@ -99,7 +99,7 @@ class ProfileIDPage(webapp2.RequestHandler):
     def patch(self, profile_id):
         self.response.write('you putted me')
         try:
-            header = self.request.environ('HTTP_AUTHORIZATION')
+            header = self.request.environ['HTTP_AUTHORIZATION']
             auth = validateUserId(profile_id, header)
         except (KeyError, AttributeError):
             self.response.write('Blar, need auth')
@@ -111,7 +111,7 @@ class ProfileIDPage(webapp2.RequestHandler):
     def delete(self, profile_id):
         self.response.write('you deleted me')
         try:
-            header = self.request.environ('HTTP_AUTHORIZATION')
+            header = self.request.environ['HTTP_AUTHORIZATION']
             auth = validateUserId(profile_id, header)
         except (KeyError, AttributeError):
             self.response.write('Blar, need auth')
