@@ -26,6 +26,7 @@ class Profile(ndb.Model):
     handle = ndb.StringProperty()
     feeling = ndb.StringProperty()
     bio = ndb.StringProperty()
+    notes = ndb.KeyProperty(kind=Note, repeated=True)
 
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
@@ -286,7 +287,6 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    (r'/rest/profiles/(\d+)/notes', NotesListPage),
     (r'/rest/notes', NotesListPage),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
