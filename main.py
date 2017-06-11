@@ -104,9 +104,7 @@ class ProfileIDPage(webapp2.RequestHandler):
         except (KeyError, AttributeError):
             self.response.write('Blar, need auth')
             auth = False
-        handle = self.request.get('handle', default_value='same')
-        self.response.write(auth)
-        self.response.write(self.request.body)
+        
         
     def delete(self, profile_id):
         self.response.write('you deleted me')
@@ -116,9 +114,15 @@ class ProfileIDPage(webapp2.RequestHandler):
         except (KeyError, AttributeError):
             self.response.write('Blar, need auth')
             auth = False
-        handle = self.request.get('handle', default_value='same')
-        self.response.write(auth)
-        self.response.write(self.request.environ)
+        
+        if (not auth):
+            status = '401 Unauthorized'
+            message = 'no authorization included'
+            user = {}
+        else:
+            prof = Profile.query(Profile.userid == profile_id).get()
+            prof.key.delete()
+        
      
 # GET: all profiles
 # POST:      
