@@ -19,7 +19,7 @@ oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 # ndb entities, four properies each, with a one-to-many relationship (profile can have any number of notes)
 # source: https://cloud.google.com/appengine/articles/modeling
 class Profile(ndb.Model):
-    userid = ndb.IntegerProperty()
+    userid = ndb.StringProperty()
     handle = ndb.StringProperty()
     feeling = ndb.StringProperty()
     bio = ndb.StringProperty()
@@ -35,7 +35,7 @@ class Note(ndb.Model):
 # auth wrappers
 # get user id: send req to google to trade token for user id
 def getUserId(token):
-    userid = 0
+    userid = 'None'
     try:
         # get it there
         url = 'https://www.googleapis.com/plus/v1/people/me'
@@ -47,11 +47,11 @@ def getUserId(token):
             # if the status code says we're good, process the result
             usercontent = json.loads(result.content)
             if (usercontent['isPlusUser'] == True):
-                userid = int(usercontent['id'])
+                userid = usercontent['id']
         else:
-            userid = result.status_code
+            userid = 'Error'
     except urlfetch.Error:
-        userid = -1
+        userid = 'Error'
     return userid
     
 # validateUserId, 
