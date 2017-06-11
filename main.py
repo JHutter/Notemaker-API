@@ -250,7 +250,7 @@ class NotesListPage(webapp2.RequestHandler):
                     keyid = query.get().name
                     note_id = lastNoteNum
                     lastNoteNum += 1
-                    owner = 
+                    #owner = keyid
                     title = self.request.get('title', default_value='untitled')
                     content = self.request.get('content', default_value='[empty]')
                     date_added = datetime.date.today()
