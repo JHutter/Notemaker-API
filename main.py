@@ -81,13 +81,11 @@ class ProfileListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
         query = Profile.query()
-        #line = query.get()
+        line = query.get()
         results = []
         
-        for line in query.fetch():
-            results.append(line)
-            #line = query.get()
-        
+        if (line is not None):
+            self.response.write(line)
         self.response.out.write(json.dumps({'profiles': results}))
         
     def post(self):
