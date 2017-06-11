@@ -95,6 +95,9 @@ class ProfileIDPage(webapp2.RequestHandler):
             for line in lines:
                 jsonline.append({'handle': line.handle, 'feeling': line.feeling, 'bio': line.bio}) # exclude userid
             self.response.out.write(json.dumps({'profiles':jsonline}))
+            
+    def patch(self):
+        self.response.write('you patched me')
      
 # GET: all profiles
 # POST:      
