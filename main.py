@@ -94,9 +94,9 @@ class ProfileListPage(webapp2.RequestHandler):
                 raise Exception
             
             # get info sent in request
-            handle = self.request.POST['handle']
-            feeling = self.request.POST['feeling']
-            bio = self.request.POST['bio']
+            handle = self.request.get('handle', default_value='anon')
+            feeling = self.request.get('feeling', default_value=' ')
+            bio = self.request.get('bio', default_value='somebody')
             
             if (Profile.query(userid == user_id)): # trying to keep a uniqueness constraint here, even tho ndb doesn't support them
                 #no don't add
@@ -116,21 +116,14 @@ class ProfileListPage(webapp2.RequestHandler):
                         'bio': bio}
         
         except AttributeError:
-            #self.response.write('error')
-            
-            if ('Authorization' not in self.request.headers ):
-                status = '401 Unauthorized'
-                message = 'no authorization included'
-                user = {}
-            
-            status = '400 Bad Request'
-            message = 'missing parameters'
+            status = '401 Unauthorized'
+            message = 'no authorization included'
             user = {}
-            # return error message to userStatus: 201 Created
-        # except:
-            # status = '403 Forbidden'
-            # message = 'invalid authorization'
-            # user = {self.request.POST}
+
+        except:
+            status = '403 Forbidden'
+            message = 'invalid authorization'
+            user = {self.request.POST}
             
         # return result to user
         response = {'status': status,
