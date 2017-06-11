@@ -92,8 +92,8 @@ class ProfileListPage(webapp2.RequestHandler):
             self.response.write(header)
             self.response.write(user_id)
             
-            if (user_id <= 0):
-                raise Exception
+            # if (user_id <= 0):
+                # raise Exception
             
             # get info sent in request
             handle = self.request.get('handle', default_value='anon')
