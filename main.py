@@ -115,7 +115,7 @@ class ProfileIDPage(webapp2.RequestHandler):
             newHandle = self.request.get('handle', default_value='same')
             newBio = self.request.get('bio', default_value='same')
             newFeeling = self.request.get('newFeeling', default_value='same')
-            oldProfile = Profile.query(Profile.userid == profile_id).get()
+            oldProfile = Profile.query(Profile.userid == profile_id).put()
             
             if (newHandle != 'same'):
                 oldProfile.handle = newHandle
