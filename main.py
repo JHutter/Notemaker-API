@@ -87,11 +87,14 @@ class ProfileIDPage(webapp2.RequestHandler):
         query = Profile.query(Profile.userid == profile_id)
         if (query.get() is None):
             self.response.out.write(json.dumps({'profiles':[]}))
-        else: 
+        elif (auth): 
+            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query().fetch()]}))
+        else:    
             lines = Profile.query(Profile.userid == profile_id).iter()
+            jsonline = []
             for line in lines:
-                self.response.write(line.handle)
-            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch()]}))
+                jsonline.append({'handle': line.handle, 'feeling': line.feeling, 'bio': line.bio}) # exclude userid
+            self.response.out.write(json.dumps({'profiles':jsonline}))
      
 # GET: all profiles
 # POST:      
@@ -99,8 +102,14 @@ class ProfileListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
         # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
-        # exclude userid in projection
-        self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query().fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
+        # exclude userid in projection ******
+        lines = Profile.query().iter()
+        jsonline = []
+        for line in lines:
+            jsonline.append({'handle': line.handle, 'feeling': line.feeling, 'bio': line.bio}) # exclude userid
+        self.response.out.write(json.dumps({'profiles':jsonline}))
+        
+        #self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query().fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
         
     def post(self):
         self.response.headers['Content-Type'] = 'application/json'  
