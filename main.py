@@ -234,6 +234,8 @@ class NotesListPage(webapp2.RequestHandler):
         self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visible == True).fetch()]})) 
         
     def post(self):
+        self.response.write(self.request.headers)
+        
         try:
             header = self.request.environ['HTTP_AUTHORIZATION']
             userid = getUserId(header)
