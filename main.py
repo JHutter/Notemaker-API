@@ -31,6 +31,7 @@ class Note(ndb.Model):
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
 
+    
 # auth wrappers
 # get user id: send req to google to trade token for user id
 def getUserId(token):
@@ -81,25 +82,58 @@ class ProfileListPage(webapp2.RequestHandler):
         self.response.write('List profiles here')
         
     def post(self):
+        self.response.headers['Content-Type'] = 'application/json'  
         try:        # source: https://stackoverflow.com/questions/610883/how-to-know-if-an-object-has-an-attribute-in-python/610923#610923
             header = self.request.headers['Authorization']
-            userid = getUserId(header)
-            #self.response.write(userid)
+            user_id = getUserId(header)
+            
+            if (user_id <= 0):
+                raise Exception
             
             # get info sent in request
-            #postResults = self.request.POST
             handle = self.request.POST['handle']
-            # handle = 'whatever'
             feeling = self.request.POST['feeling']
-            # feeling = 'apathetic'
             bio = self.request.POST['bio']
-            # bio = 'none'
             
-            newProfile = Profile(id=userid, handle=handle, feeling=feeling, bio=bio)
-            newProfile.put()
+            if (Profile.query(userid == user_id)): # trying to keep a uniqueness constraint here, even tho ndb doesn't support them
+                #no don't add
+                self.response.write('user already exists')
+                status = '409 Conflict'
+                message = 'profile already exists for this user'
+                user = {}
+                
+            else:
+                newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
+                newProfile.put()
+                status = '201 Created'
+                message = 'user profile created'
+                user = {'id': user_id,
+                        'handle': handle,
+                        'feeling': feeling,
+                        'bio': bio}
+        
         except AttributeError:
             self.response.write('error')
-            # return error message to user
+            
+            if (not hasattr(self.request.headers, 'Authorization')):
+                status = '401 Unauthorized'
+                message = 'no authorization included'
+                user = {}
+            
+            status = '400 Bad Request'
+            message = 'missing parameters'
+            user = {}
+            # return error message to userStatus: 201 Created
+        except:
+            status = '403 Forbidden'
+            message = 'invalid authorization'
+            user = {}
+            
+        # return result to user
+        response = {'status' = status,
+                    'message' = message,
+                    'user' = user}
+        self.response.out.write(json.dumps(response))
         
 
 
