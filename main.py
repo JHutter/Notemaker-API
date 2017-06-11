@@ -17,7 +17,7 @@ import datetime
 client = '387463041973-2j1noh0p0danoujlobm20q9378375b0n.apps.googleusercontent.com'
 secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g'
 oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
-lastNoteNum = 0 # in production code where app.yaml has threading, use a mutex here to avoid a race condition.
+# in production code where app.yaml has threading, use a mutex here to avoid a race condition.
 
 # ndb entities, four properies each, with a one-to-many relationship (profile can have any number of notes)
 # source: https://cloud.google.com/appengine/articles/modeling
@@ -73,7 +73,7 @@ class AutoIncrement():
     lastNoteNum = 0
     
     def getNextAutoInc():
-        self.lastNoteNum += 1
+        lastNoteNum += 1
         return lastNoteNum
     
 class RestPage(webapp2.RequestHandler):
