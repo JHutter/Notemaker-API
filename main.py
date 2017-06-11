@@ -88,7 +88,7 @@ class ProfileListPage(webapp2.RequestHandler):
                 # self.response.write('auth not in header')
                 # raise AttributeError
             
-            header = self.request.headers['HTTP_AUTHORIZATION']
+            header = self.request.headers['Authorization']
             user_id = getUserId(header)
             self.response.write(header)
             self.response.write(user_id)
@@ -121,7 +121,7 @@ class ProfileListPage(webapp2.RequestHandler):
                         'bio': bio}
                 
         
-        except AttributeError:
+        except KeyError:
             status = '401 Unauthorized'
             message = 'no authorization included'
             user_id = -1
