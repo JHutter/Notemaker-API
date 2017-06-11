@@ -99,7 +99,7 @@ class ProfileIDPage(webapp2.RequestHandler):
     def put(self, profile_id):
         self.response.write('you putted me')
         try:
-            header = self.request.headers('Authorization')
+            #header = self.request.headers('Authorization')
             authResult = validateUserId(profile_id, header)
         except KeyError:
             auth = False
