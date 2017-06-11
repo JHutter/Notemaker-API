@@ -184,7 +184,10 @@ class NotesPage(webapp2.RequestHandler):
         # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
         self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visibile == True).fetch()]}))
 
-        
+# source: https://stackoverflow.com/questions/16280496/patch-method-handler-on-google-appengine-webapp2
+allowed_methods = webapp2.WSGIApplication.allowed_methods
+new_allowed_methods = allowed_methods.union(('PATCH',))
+webapp2.WSGIApplication.allowed_methods = new_allowed_methods       
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
