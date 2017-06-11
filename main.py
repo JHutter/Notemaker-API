@@ -103,7 +103,7 @@ class ProfileListPage(webapp2.RequestHandler):
                 self.response.write('user already exists')
                 status = '409 Conflict'
                 message = 'profile already exists for this user'
-                user = {self.request.POST}
+                user = self.request.POST
                 
             else:
                 newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
@@ -121,11 +121,11 @@ class ProfileListPage(webapp2.RequestHandler):
             if ('Authorization' not in self.request.headers ):
                 status = '401 Unauthorized'
                 message = 'no authorization included'
-                user = {self.request.POST}
+                user = self.request.POST
             
             status = '400 Bad Request'
             message = 'missing parameters'
-            user = {self.request.POST}
+            user = self.request.POST
             # return error message to userStatus: 201 Created
         # except:
             # status = '403 Forbidden'
