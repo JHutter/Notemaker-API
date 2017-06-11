@@ -47,7 +47,7 @@ def getUserId(token):
             # if the status code says we're good, process the result
             usercontent = json.loads(result.content)
             if (usercontent['isPlusUser'] == True):
-                userid = usercontent['id']
+                userid = int(usercontent['id'])
         else:
             userid = result.status_code
     except urlfetch.Error:
