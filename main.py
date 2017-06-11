@@ -91,7 +91,7 @@ class ProfileIDPage(webapp2.RequestHandler):
             queryF = Profile.query(Profile.userid == profile_id).fetch()
             self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in queryF]}))
         else: 
-            queryF = Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio)
+            queryF = Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])
             self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in queryF]}))
             #self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
      
