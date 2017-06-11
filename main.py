@@ -118,7 +118,7 @@ class ProfileListPage(webapp2.RequestHandler):
         except AttributeError:
             #self.response.write('error')
             
-            if ('Authorization' not self.request.headers ):
+            if ('Authorization' not in self.request.headers ):
                 status = '401 Unauthorized'
                 message = 'no authorization included'
                 user = {self.request.POST}
