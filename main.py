@@ -97,32 +97,61 @@ class ProfileIDPage(webapp2.RequestHandler):
             self.response.out.write(json.dumps({'profiles':jsonline}))
             
     def patch(self, profile_id):
-        self.response.write('you putted me')
         try:
             header = self.request.environ['HTTP_AUTHORIZATION']
             auth = validateUserId(profile_id, header)
         except (KeyError, AttributeError):
-            self.response.write('Blar, need auth')
-            auth = False
-        
-        
-    def delete(self, profile_id):
-        self.response.write('you deleted me')
-        try:
-            header = self.request.environ['HTTP_AUTHORIZATION']
-            auth = validateUserId(profile_id, header)
-        except (KeyError, AttributeError):
-            self.response.write('Blar, need auth')
             auth = False
         
         if (not auth):
             status = '401 Unauthorized'
-            message = 'no authorization included'
+            message = 'invalid or missing authorization'
+            user = {}
+            
+        else:
+            # prof = Profile.query(Profile.userid == profile_id).get()
+            # prof.key.delete()
+            
+            newHandle = self.request.get('handle', default_value='same')
+            newBio = self.request.get('bio', default_value='same')
+            newFeeling = self.request.get('newFeeling', default_value='same')
+            oldProfile = Profile.query(Profile.userid == profile_id).get()
+            
+            if (newHandle != 'same'):
+                oldProfile.handle = newHandle
+            if (newBio != 'same'):
+                oldProfile.bio = newBio
+            if (newFeeling != 'same'):
+                oldProfile.feeling = newFeeling
+            oldProfile.put()
+            
+            # query again so we know we actually made the changes
+            newProfile = Profile.query(Profile.userid == profile_id).get()
+            status = '200 OK'
+            message = 'profile modified'
+            user = {'id': profile_id,
+                    'handle': newProfile.handle,
+                    'bio': newProfile.bio,
+                    'feeling': newProfile.feeling}
+            
+        self.response.out.write(json.dumps({'status': status, 'message': message, 'user': user}))
+        
+        
+    def delete(self, profile_id):
+        try:
+            header = self.request.environ['HTTP_AUTHORIZATION']
+            auth = validateUserId(profile_id, header)
+        except (KeyError, AttributeError):
+            auth = False
+        
+        if (not auth):
+            status = '401 Unauthorized'
+            message = 'invalid or missing authorization'
             
         else:
             prof = Profile.query(Profile.userid == profile_id).get()
             prof.key.delete()
-            status = ' 200 OK'
+            status = '200 OK'
             message = 'profile deleted'
             
         self.response.out.write(json.dumps({'status': status, 'message': message}))
