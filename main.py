@@ -131,12 +131,15 @@ class ProfileListPage(webapp2.RequestHandler):
                     'user': user}
         self.response.out.write(json.dumps(response))
         
-
-
+class ResetDB(webapp2.RequestHandler):
+    def get(self):
+        ndb.delete_multi(Note.query().fetch()
+)
         
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
+    (r'/rest/resetDB', ResetDB),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
     (r'/rest.*', RestPage)
