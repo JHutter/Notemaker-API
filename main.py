@@ -101,8 +101,9 @@ class ProfileListPage(webapp2.RequestHandler):
             feeling = self.request.get('feeling', default_value=' ')
             bio = self.request.get('bio', default_value='somebody')
             
+            # source: https://stackoverflow.com/questions/12220653/get-ndb-query-length-using-python-on-google-app-engine
             query = Profile.query(Profile.userid == user_id)
-            if (query.iter.has_next()): # trying to keep a uniqueness constraint here, even tho ndb doesn't support them
+            if (query.get() is not None): # trying to keep a uniqueness constraint here, even tho ndb doesn't support them
                 #no don't add
                 self.response.write('user already exists')
                 status = '409 Conflict'
