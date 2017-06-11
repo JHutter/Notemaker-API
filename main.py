@@ -69,7 +69,7 @@ def validateUserId(id, token):
         return True
     return False
 
-def getNextNoteNum():
+def getNextNoteNum(lastNoteNum):
     global lastNoteNum
     if (lastNoteNum is None):
         lastNoteNum = 0
@@ -261,7 +261,7 @@ class NotesListPage(webapp2.RequestHandler):
             if (query is not None):
                 keyid = query.key
                 note_id = getNextNoteNum()
-                lastNoteNum += 1
+                #lastNoteNum += 1
                 #owner = keyid
                 title = self.request.get('title', default_value='untitled')
                 content = self.request.get('content', default_value='[empty]')
