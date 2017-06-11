@@ -72,7 +72,7 @@ def validateUserId(id, token):
 class AutoIncrement():
     lastNoteNum = 0
     
-    def getNextAutoInc(self):
+    def getNextAutoInc():
         self.lastNoteNum += 1
         return lastNoteNum
     
