@@ -24,9 +24,9 @@ class Profile(ndb.Model):
     feeling = ndb.StringProperty()
     bio = ndb.StringProperty()
 
+# source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
-    contact = ndb.ReferenceProperty(Profile,
-                                   collection_name='notes')
+    contact = ndb.KeyProperty(kind=Profile)
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
