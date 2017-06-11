@@ -38,7 +38,7 @@ def getUserId(token):
     try:
         # get it there
         url = 'https://www.googleapis.com/plus/v1/people/me'
-        auth = {'Authorization': 'Bearer ' + access_token}
+        auth = {'Authorization': token}
         
         # check what we got back
         result = urlfetch.fetch(url, headers=auth)
@@ -51,7 +51,7 @@ def getUserId(token):
             userid = -1
     except urlfetch.Error:
         userid = -1
-    return user_id
+    return userid
     
 # validateUserId, 
 # send req to google with token, see if resulting g+ id matches what was passed to us by user originally
