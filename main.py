@@ -24,12 +24,12 @@ class Profile(ndb.Model):
     feeling = ndb.StringProperty()
     bio = ndb.StringProperty()
 
-class Note(db.Model):
-    contact = db.ReferenceProperty(Profile,
+class Note(ndb.Model):
+    contact = ndb.ReferenceProperty(Profile,
                                    collection_name='notes')
-    title = db.StringProperty()
-    content = db.StringProperty()
-    date_added = db.DateProperty()
+    title = ndb.StringProperty()
+    content = ndb.StringProperty()
+    date_added = ndb.DateProperty()
 
 
 
