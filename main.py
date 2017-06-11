@@ -3,6 +3,7 @@
 # cs496-400 Spring 2017
 
 # sources: oauth lecture and demo, others cited throughout
+# source: https://cloud.google.com/appengine/docs/standard/python/ndb/queries
 
 import webapp2
 from google.appengine.api import urlfetch
@@ -30,6 +31,7 @@ class Note(ndb.Model):
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
+    visibile = ndb.BoolProperty()
 
     
 # auth wrappers
@@ -71,22 +73,33 @@ class RestPage(webapp2.RequestHandler):
 class ProfileIDPage(webapp2.RequestHandler):
     def get(self, profile_id):
         self.response.headers['Content-Type'] = 'application/json'   
-        obj = {
-          'success': profile_id, 
-          'payload': 'some var',
-        } 
-        self.response.out.write(json.dumps(obj))
-        
+        try:
+            # get auth, compare userid
+            header = self.request.headers['Authorization']
+            getID = getUserId(token)
+            if (getID == 'None' or getID == 'Error'):
+                auth = False
+            else:
+                auth = True
+        except KeyError:
+            auth = False
+         
+        query = Profile.query(Profile.userid == profile_id)
+        if (query.get() is None):
+            self.response.out.write({'profiles':[]})
+        elif (auth):
+            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch()]}))
+        else: 
+            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query().fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
+     
+# GET: all profiles
+# POST:      
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
-        # query = Profile.query()
-        # all = query.fetch()
-        # results = []
-        
         # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
-        self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query().fetch()]}))
-        # self.response.out.write(json.dumps({'profiles': results}))
+        # exclude userid in projection
+        self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query().fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
         
     def post(self):
         self.response.headers['Content-Type'] = 'application/json'  
@@ -139,15 +152,18 @@ class ProfileListPage(webapp2.RequestHandler):
                     'user': user}
         self.response.out.write(json.dumps(response))
         
-class ResetDB(webapp2.RequestHandler):
+# get all visible notes
+class NotesPage(webapp2.RequestHandler):
     def get(self):
-        ndb.delete_multi(Note.query().fetch()
+        self.response.headers['Content-Type'] = 'application/json'  
+        # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
+        self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visibile == True).fetch()]}))
 )
         
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    (r'/rest/resetDB', ResetDB),
+    (r'/rest/notes', NotesPage),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
     (r'/rest.*', RestPage)
