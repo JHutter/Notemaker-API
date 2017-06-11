@@ -237,7 +237,8 @@ class NotesListPage(webapp2.RequestHandler):
         self.response.write(self.request.headers)
         
         try:
-            header = self.request.environ['HTTP_AUTHORIZATION']
+            #header = self.request.environ['HTTP_AUTHORIZATION']
+            header = self.request.headers['Authorization']
             userid = getUserId(header)
             
             if (userid == 'Error' or userid == 'None'):
@@ -271,10 +272,10 @@ class NotesListPage(webapp2.RequestHandler):
                 
                 
             
-        except (KeyError, AttributeError):
-            status = '401 Unauthorized'
-            message = 'no authorization included'
-            note = {}
+        # except (KeyError, AttributeError):
+            # status = '401 Unauthorized'
+            # message = 'no authorization included'
+            # note = {}
             
             
         self.response.out.write(json.dumps({'status': status, 'message': message, 'note': note}))
