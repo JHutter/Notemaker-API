@@ -89,6 +89,8 @@ class ProfileListPage(webapp2.RequestHandler):
             
             header = self.request.headers['Authorization']
             user_id = getUserId(header)
+            self.response.write(header)
+            self.response.write(user_id)
             
             if (user_id <= 0):
                 raise Exception
