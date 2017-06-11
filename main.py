@@ -10,10 +10,19 @@ from urllib import urlencode
 import json
 import logging
 from google.appengine.ext import ndb
+from google.appengine.datastore.datastore_query import Cursor
 
 client = '387463041973-2j1noh0p0danoujlobm20q9378375b0n.apps.googleusercontent.com'
 secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g'
 oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
+
+class Profile(ndb.Model):
+    userid = ndb.StringProperty()
+    handle = ndb.IntegerProperty()
+    feeling = ndb.StringProperty()
+    bio = ndb.StringProperty()
+
+
 
 class RestPage(webapp2.RequestHandler):
     def get(self):
