@@ -85,7 +85,7 @@ class ProfileListPage(webapp2.RequestHandler):
         results = []
         
         for line in all:
-            self.response.write(line)
+            self.response.write(line.Profile.handle)
         self.response.out.write(json.dumps({'profiles': results}))
         
     def post(self):
