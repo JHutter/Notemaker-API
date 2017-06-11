@@ -124,10 +124,10 @@ class ProfileListPage(webapp2.RequestHandler):
             message = 'no authorization included'
             user = {}
 
-        except:
-            status = '403 Forbidden'
-            message = 'invalid authorization'
-            user = {}
+        # except:
+            # status = '403 Forbidden'
+            # message = 'invalid authorization'
+            # user = {}
             
         # return result to user
         response = {'status': status,
