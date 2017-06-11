@@ -87,13 +87,8 @@ class ProfileIDPage(webapp2.RequestHandler):
         query = Profile.query(Profile.userid == profile_id)
         if (query.get() is None):
             self.response.out.write(json.dumps({'profiles':[]}))
-        elif (auth):
-            queryF = Profile.query(Profile.userid == profile_id).fetch()
-            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in queryF]}))
         else: 
-            queryF = Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])
-            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in queryF]}))
-            #self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
+            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch(projection=[Profile.handle, Profile.feeling, Profile.bio])]}))
      
 # GET: all profiles
 # POST:      
