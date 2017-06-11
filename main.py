@@ -70,11 +70,7 @@ def validateUserId(id, token):
     return False
 
 def getNextNoteNum(lastNoteNum):
-    global lastNoteNum
-    if (lastNoteNum is None):
-        lastNoteNum = 0
-    else:
-        lastNoteNum += 1
+    lastNoteNum += 1
     return lastNoteNum
     
 class RestPage(webapp2.RequestHandler):
@@ -260,7 +256,7 @@ class NotesListPage(webapp2.RequestHandler):
             query = Profile.query(Profile.userid == userid).get()
             if (query is not None):
                 keyid = query.key
-                note_id = getNextNoteNum()
+                note_id = getNextNoteNum(lastNoteNum)
                 #lastNoteNum += 1
                 #owner = keyid
                 title = self.request.get('title', default_value='untitled')
