@@ -118,7 +118,7 @@ class ProfileIDPage(webapp2.RequestHandler):
             auth = False
         handle = self.request.get('handle', default_value='same')
         self.response.write(auth)
-        self.response.write(self.request.body)
+        self.response.write(self.request)
      
 # GET: all profiles
 # POST:      
