@@ -16,11 +16,20 @@ client = '387463041973-2j1noh0p0danoujlobm20q9378375b0n.apps.googleusercontent.c
 secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g'
 oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 
+# ndb entities, four properies each, with a one-to-many relationship (profile can have any number of notes)
+# source: https://cloud.google.com/appengine/articles/modeling
 class Profile(ndb.Model):
-    userid = ndb.StringProperty()
-    handle = ndb.IntegerProperty()
+    userid = ndb.IntegerProperty()
+    handle = ndb.StringProperty()
     feeling = ndb.StringProperty()
     bio = ndb.StringProperty()
+
+class Note(db.Model):
+    contact = db.ReferenceProperty(Profile,
+                                   collection_name='notes')
+    title = db.StringProperty()
+    content = db.StringProperty()
+    date_added = db.DateProperty()
 
 
 
@@ -41,6 +50,11 @@ class ProfileIDPage(webapp2.RequestHandler):
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
         self.response.write('List profiles here')
+        
+    def post(self):
+        # scott = Contact(name='Scott')
+        # scott.put()
+        self.response.write('posted a new profile')
 
         
 
