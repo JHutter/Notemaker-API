@@ -273,7 +273,7 @@ class NotesListPage(webapp2.RequestHandler):
             note = {}
             
             
-        self.response.out.write(json.dumps({'status': status, 'message': 'note': note}))
+        self.response.out.write(json.dumps({'status': status, 'message': message, 'note': note}))
         
        
         
