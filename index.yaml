@@ -6,6 +6,7 @@ indexes:
   - name: handle
   - name: bio
   - name: feeling
+  - name: userid
 
 - kind: Note
   properties:
