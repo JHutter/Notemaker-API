@@ -84,7 +84,7 @@ class ProfileListPage(webapp2.RequestHandler):
         #line = query.get()
         results = []
         
-        for line in query.fetch()
+        for line in query.fetch():
             results.append(line)
             #line = query.get()
         
