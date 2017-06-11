@@ -97,6 +97,7 @@ class OauthHandler(webapp2.RequestHandler):
             except urlfetch.Error:
                 logging.exception('Caught exception fetching url')
         
+# source: https://stackoverflow.com/questions/16280496/patch-method-handler-on-google-appengine-webapp2
 allowed_methods = webapp2.WSGIApplication.allowed_methods
 new_allowed_methods = allowed_methods.union(('PATCH',))
 webapp2.WSGIApplication.allowed_methods = new_allowed_methods

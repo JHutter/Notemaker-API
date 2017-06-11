@@ -96,7 +96,7 @@ class ProfileIDPage(webapp2.RequestHandler):
                 jsonline.append({'handle': line.handle, 'feeling': line.feeling, 'bio': line.bio}) # exclude userid
             self.response.out.write(json.dumps({'profiles':jsonline}))
             
-    def put(self, profile_id):
+    def patch(self, profile_id):
         self.response.write('you putted me')
         try:
             header = self.request.headers('Authorization')
