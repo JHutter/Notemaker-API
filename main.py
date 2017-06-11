@@ -26,7 +26,7 @@ class Profile(ndb.Model):
 
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
-    contact = ndb.KeyProperty(kind=Profile)
+    owner = ndb.KeyProperty(kind=Profile)
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
