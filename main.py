@@ -130,9 +130,9 @@ class ProfileListPage(webapp2.RequestHandler):
             user = {}
             
         # return result to user
-        response = {'status' = status,
-                    'message' = message,
-                    'user' = user}
+        response = {'status': status,
+                    'message': message,
+                    'user': user}
         self.response.out.write(json.dumps(response))
         
 
