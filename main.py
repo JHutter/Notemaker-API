@@ -80,7 +80,7 @@ class ProfileListPage(webapp2.RequestHandler):
         
     def post(self):
         header = self.request.headers['Authorization']
-        if (header.length > 8):
+        if (len(header) > 8):
             token = header[7:] # They sent us 'Bearer '
             userid = getUserId(token)
             self.response.write(userid)
