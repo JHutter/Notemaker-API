@@ -80,13 +80,13 @@ class ProfileIDPage(webapp2.RequestHandler):
 class ProfileListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
-        query = Profile.query()
-        all = query.fetch()
-        results = []
+        # query = Profile.query()
+        # all = query.fetch()
+        # results = []
         
-        for line in all:
-            self.response.write(line.Profile.handle)
-        self.response.out.write(json.dumps({'profiles': results}))
+        # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
+        self.response.out.write(json.dumps([line.to_dict() for line in Profile.query().fetch()]))
+        # self.response.out.write(json.dumps({'profiles': results}))
         
     def post(self):
         self.response.headers['Content-Type'] = 'application/json'  
