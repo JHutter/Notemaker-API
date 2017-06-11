@@ -247,7 +247,7 @@ class NotesListPage(webapp2.RequestHandler):
                 auth = True
                 query = Profile.query(Profile.userid == userid).get()
                 if (query is not None):
-                    keyid = query.key()
+                    keyid = query.key().get()
                     note_id = lastNoteNum
                     lastNoteNum += 1
                     title = self.request.get('title', default_value='untitled')
