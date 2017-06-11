@@ -136,7 +136,7 @@ class ProfileIDPage(webapp2.RequestHandler):
                     'bio': newProfile.bio,
                     'feeling': newProfile.feeling}
             
-        self.response.out.write(json.dumps({'status': status, 'message': message, 'user': user}))
+        self.response.out.write(json.dumps({'status': status, 'message': message, 'user': user, 'var': newBio}))
         
         
     def delete(self, profile_id):
