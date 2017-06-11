@@ -88,6 +88,9 @@ class ProfileIDPage(webapp2.RequestHandler):
         if (query.get() is None):
             self.response.out.write(json.dumps({'profiles':[]}))
         else: 
+            lines = Profile.query(Profile.userid == profile_id).iter()
+            for line in lines:
+                self.response.write(line.handle)
             self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch()]}))
      
 # GET: all profiles
