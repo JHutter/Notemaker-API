@@ -329,6 +329,7 @@ class NotesIDPage(webapp2.RequestHandler):
         header = self.request.headers['Authorization']
         auth = validateUserId(profile_id, header)
         noteExist = validateNote(note_id)
+        self.response.write(str(noteExist))
         validProfile = True if (Profile.query(Profile.userid == profile_id).get() is not None) else False
         
         
