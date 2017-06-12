@@ -84,8 +84,11 @@ def validateUserId(id, token):
 def validateNote(noteid):
     results = Note.query().fetch()
     
+    resArr = []
+    
     for result in results:
-        if result.key.string_id() == noteid:
+        newArr.append((result.key.string_id(), str(noteid)))
+        if result.key.string_id() == str(noteid):
             return True
     
     return False
