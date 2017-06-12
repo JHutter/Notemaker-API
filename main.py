@@ -88,8 +88,16 @@ def validateNote(noteid):
             return True
     else:
         return False
+  
+# see if note's keyproperty matches the result for profile_id's key  
+def validateProfileHasNoteId(profile_id, note_id):
+    notesProfile = Note.query(Note.noteid == note_id).get().owner
+    profile_key = Profile.query(Profile.userid == profile_id).get().key
     
-    
+    if notesProfile == profile_key:
+        return True
+    else:
+        return False
 
 class AutoIncrement():
     lastNoteNum = 0
@@ -277,9 +285,7 @@ class NotesListPage(webapp2.RequestHandler):
         
     def post(self):
         self.response.write(self.request.headers)
-        
         try:
-            #header = self.request.environ['HTTP_AUTHORIZATION']
             header = self.request.headers['Authorization']
             userid = getUserId(header)
             
@@ -316,8 +322,7 @@ class NotesListPage(webapp2.RequestHandler):
             status = '401 Unauthorized'
             message = 'no authorization included'
             note = {}
-            
-            
+
         self.response.out.write(json.dumps({'status': status, 'message': message, 'note': note}))
         
 class NotesIDPage(webapp2.RequestHandler):
@@ -329,8 +334,6 @@ class NotesIDPage(webapp2.RequestHandler):
         header = self.request.headers['Authorization']
         auth = validateUserId(profile_id, header)
         noteExist = validateNote(str(note_id))
-        self.response.write(str(noteExist))
-        self.response.write(note_id)
         validProfile = True if (Profile.query(Profile.userid == profile_id).get() is not None) else False
         
         
@@ -373,6 +376,13 @@ class NotesIDPage(webapp2.RequestHandler):
         #delete the given note (must match profile)
         #stub
         self.response.write('delete the note')
+        try:
+            header = self.request.environ['HTTP_AUTHORIZATION']
+            auth = validateUserId(profile_id, header)
+            comboValid = validateProfileHasNoteId(str(profile_id), str(note_id))
+        except (KeyError, AttributeError):
+            auth = False
+        
         
     def patch(self, profile_id, note_id):
         #path the given note (must match profile)
