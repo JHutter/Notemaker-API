@@ -438,7 +438,7 @@ class NotesIDPage(webapp2.RequestHandler):
 
 class NotesForUserPage(webapp2.RequestHandler):
     def get(self, profile_id):
-        # if the note is visibl
+        # get all notes for a given profile
         self.response.headers['Content-Type'] = 'application/json'  
         try:
             header = self.request.headers['Authorization']
@@ -465,7 +465,7 @@ class NotesForUserPage(webapp2.RequestHandler):
             
         else:
             # ret anyway
-            lines = Note.query(Note.noteid == note_id).iter()
+            lines = Note.query().iter()
             jsonline = []
             for line in lines:
                 if (line.owner == profileKey):
@@ -486,7 +486,7 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
     (r'/rest/profiles/(\d+)/notes/(\d+)', NotesIDPage),
-   (r'/rest/profiles/(\d+)/notes', NotesForUserPage),
+    (r'/rest/profiles/(\d+)/notes', NotesForUserPage),
     (r'/rest/notes', NotesListPage),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
