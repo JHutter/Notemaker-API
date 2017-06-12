@@ -32,7 +32,7 @@ class AutoIncrement():
         self.lastAutoInc += 1
         return self.lastAutoInc
         
-noteidInc = AutoIncrement()
+#noteidInc = AutoIncrement()
 
 class Profile(ndb.Model):
     userid = ndb.StringProperty()
@@ -44,7 +44,7 @@ class Profile(ndb.Model):
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
     owner = ndb.KeyProperty(kind='Profile')
-    noteid = ndb.StringProperty()
+    #noteid = ndb.StringProperty()
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
@@ -80,6 +80,14 @@ def validateUserId(id, token):
     if (id == google_userid):
         return True
     return False
+    
+def validateNote(noteid):
+    result = Note.query(kind='Note', str(id)== noteid)
+    
+    if (result.get() is not None):
+        return True
+    else:
+        return False
 
 class AutoIncrement():
     lastNoteNum = 0
@@ -286,9 +294,9 @@ class NotesListPage(webapp2.RequestHandler):
                     content = self.request.get('content', default_value='[empty]')
                     date_added = datetime.date.today()
                     visible = self.request.get('visible', default_value='False')
-                    noteid = str(noteidInc.getNextAutoInc())
+                    #noteid = str(noteidInc.getNextAutoInc())
                     
-                    newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'), noteid=noteid)
+                    newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'))
                     #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
                     newKey = newNote.put()
                     status = '201 Created'
@@ -310,6 +318,20 @@ class NotesListPage(webapp2.RequestHandler):
             
         self.response.out.write(json.dumps({'status': status, 'message': message, 'note': note}))
         
+class NotesIDPage(webapp2.RequestHandler):
+    def get(self, profile_id, note_id):
+        # if the note is visibl
+        self.response.headers['Content-Type'] = 'application/json'  
+        try:
+            #header = self.request.environ['HTTP_AUTHORIZATION']
+            header = self.request.headers['Authorization']
+            auth = validateUserId(profile_id, header)
+            noteExist = validateNote(note_id)
+            
+            self.response.write(str(noteExist))
+            self.response.write(note_id)
+            
+        
        
         
 
@@ -320,6 +342,7 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
+    (r'/rest/profiles/(\d+)notes/(\d+)', NotesIDPage),
     (r'/rest/notes', NotesListPage),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
