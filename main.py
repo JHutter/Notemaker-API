@@ -4,6 +4,7 @@
 
 # sources: oauth lecture and demo, others cited throughout
 # source: https://cloud.google.com/appengine/docs/standard/python/ndb/queries
+# source: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html for status code
 
 import webapp2
 from google.appengine.api import urlfetch
@@ -329,10 +330,13 @@ class NotesIDPage(webapp2.RequestHandler):
     def get(self, profile_id, note_id):
         # if the note is visibl
         self.response.headers['Content-Type'] = 'application/json'  
-        #try:
-        #header = self.request.environ['HTTP_AUTHORIZATION']
-        header = self.request.headers['Authorization']
-        auth = validateUserId(profile_id, header)
+        try:
+            header = self.request.headers['Authorization']
+            auth = validateUserId(profile_id, header)
+        except (KeyError, AttributeError):
+            auth = False
+            
+        
         noteExist = validateNote(str(note_id))
         validProfile = True if (Profile.query(Profile.userid == profile_id).get() is not None) else False
         
@@ -363,14 +367,8 @@ class NotesIDPage(webapp2.RequestHandler):
                 status = '200 OK'
                 message = 'note returned'
                 note = jsonline
-                
-                
+
         self.response.write(json.dumps({'status': status, 'message': message, 'note': note}))
-        
-        #except (KeyError, AttributeError):
-            
-            
-        #self.response.write(json.dumps({}))
             
     def delete(self, profile_id, note_id):  
         #delete the given note (must match profile)
@@ -436,7 +434,57 @@ class NotesIDPage(webapp2.RequestHandler):
             
             
         self.response.out.write(json.dumps({'status': status, 'message':message}))
-       
+ 
+
+class NotesForUserPage(webapp2.RequestHandler):
+    def get(self, profile_id):
+        # if the note is visibl
+        self.response.headers['Content-Type'] = 'application/json'  
+        try:
+            header = self.request.headers['Authorization']
+            auth = validateUserId(profile_id, header)
+            user = Profile.query(Profile.userid == profile_id).get()
+            if (user is None):
+                raise Exception
+        except (KeyError, AttributeError):
+            auth = False
+        except (Exception):
+            status = '404 Not Found'
+            message = 'No such profile'
+            notes = []
+        
+        profileKey = Profile.query(Profile.userid == profile_id).key
+        
+        if (not auth):
+            # only ret if public
+            lines = Note.query(Note.visible == True).iter()
+            jsonline = []
+            for line in lines:
+                if (line.owner == profileKey):
+                    jsonline.append({'title': line.title, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
+            
+        else:
+            # ret anyway
+            lines = Note.query(Note.noteid == note_id).iter()
+            jsonline = []
+            for line in lines:
+                if (line.owner == profileKey):
+                    jsonline.append({'title': line.title, 'id': note_id, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
+        
+        status = '200 OK'
+        message = 'note returned'
+        notesArr = jsonline
+        
+        
+        else:
+            if (not validProfile):  
+                status = '404 Not Found'
+                message = 'no matching profile found'
+                note = {}
+            else:
+                
+
+        self.response.write(json.dumps({'status': status, 'message': message, 'notes': notesArr}))
         
 
 # source: https://stackoverflow.com/questions/16280496/patch-method-handler-on-google-appengine-webapp2
@@ -447,6 +495,7 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
     (r'/rest/profiles/(\d+)/notes/(\d+)', NotesIDPage),
+   (r'/rest/profiles/(\d+)/notes', NotesForUserPage),
     (r'/rest/notes', NotesListPage),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
