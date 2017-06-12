@@ -371,9 +371,13 @@ class NotesIDPage(webapp2.RequestHandler):
             
     def delete(self, profile_id, note_id):  
         #delete the given note (must match profile)
+        #stub
+        self.response.write('delete the note')
         
     def patch(self, profile_id, note_id):
         #path the given note (must match profile)
+        #stub
+        self.response.write('patch the note')
        
         
 
