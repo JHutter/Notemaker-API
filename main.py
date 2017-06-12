@@ -82,7 +82,7 @@ def validateUserId(id, token):
     return False
     
 def validateNote(noteid):
-    result = Note.query(kind='Note', id == noteid)
+    result = Note.query(Note.kind='Note', Note.id == noteid)
     
     if (result.get() is not None):
         return True
