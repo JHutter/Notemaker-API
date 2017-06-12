@@ -322,17 +322,19 @@ class NotesIDPage(webapp2.RequestHandler):
     def get(self, profile_id, note_id):
         # if the note is visibl
         self.response.headers['Content-Type'] = 'application/json'  
-        try:
-            #header = self.request.environ['HTTP_AUTHORIZATION']
-            header = self.request.headers['Authorization']
-            auth = validateUserId(profile_id, header)
-            noteExist = validateNote(note_id)
-            
-            self.response.write(str(noteExist))
-            self.response.write(note_id)
+        #try:
+        #header = self.request.environ['HTTP_AUTHORIZATION']
+        header = self.request.headers['Authorization']
+        auth = validateUserId(profile_id, header)
+        noteExist = validateNote(note_id)
         
-        except (KeyError, AttributeError):
-            self.response.write('couldn\'t get header')
+        self.response.write(str(noteExist))
+        self.response.write(note_id)
+        
+        #except (KeyError, AttributeError):
+            
+            
+        #self.response.write(json.dumps({}))
             
         
        
