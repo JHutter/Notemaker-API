@@ -453,7 +453,7 @@ class NotesForUserPage(webapp2.RequestHandler):
             message = 'No such profile'
             notes = []
         
-        profileKey = Profile.query(Profile.userid == profile_id).key
+        profileKey = Profile.query(Profile.userid == profile_id).get().key
         
         if (not auth):
             # only ret if public
