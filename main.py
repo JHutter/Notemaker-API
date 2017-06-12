@@ -328,7 +328,7 @@ class NotesIDPage(webapp2.RequestHandler):
         #header = self.request.environ['HTTP_AUTHORIZATION']
         header = self.request.headers['Authorization']
         auth = validateUserId(profile_id, header)
-        noteExist = validateNote(note_id)
+        noteExist = validateNote(str(note_id))
         self.response.write(str(noteExist))
         self.response.write(note_id)
         validProfile = True if (Profile.query(Profile.userid == profile_id).get() is not None) else False
@@ -369,7 +369,11 @@ class NotesIDPage(webapp2.RequestHandler):
             
         #self.response.write(json.dumps({}))
             
+    def delete(self, profile_id, note_id):  
+        #delete the given note (must match profile)
         
+    def patch(self, profile_id, note_id):
+        #path the given note (must match profile)
        
         
 
