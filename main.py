@@ -84,10 +84,7 @@ def validateUserId(id, token):
 def validateNote(noteid):
     results = Note.query().fetch()
     
-    resArr = []
-    
     for result in results:
-        resArr.append((result.key.id(), result.key.id()))
         if result.key.id() == long(noteid):
             return True
     
@@ -333,7 +330,36 @@ class NotesIDPage(webapp2.RequestHandler):
         header = self.request.headers['Authorization']
         auth = validateUserId(profile_id, header)
         noteExist = validateNote(note_id)
+        validProfile = True if (Profile.query(Profile.userid == profile_id).get() is not None) else False
         
+        
+        if (not noteExist):
+            status = '404 Not Found'
+            message = 'no matching note found'
+            note = {}
+        else:
+            if (not validProfile):  
+                status = '404 Not Found'
+                message = 'no matching profile found'
+                note = {}
+            else:
+                if (not auth):
+                    # only ret if public
+                    lines = Note.query(Note.visible == True, Note.key.id == long(note_id)).iter()
+                    jsonline = []
+                    for line in lines:
+                        jsonline.append({'title': line.title, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
+                else:
+                    # ret anyway
+                    lines = Note.query(Note.key.id == long(note_id)).iter()
+                    jsonline = []
+                    for line in lines:
+                        jsonline.append({'title': line.title, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
+                    
+                
+                status = '200 OK'
+                message = 'note returned'
+                note = {}
         self.response.write(str(noteExist))
         self.response.write(note_id)
         
