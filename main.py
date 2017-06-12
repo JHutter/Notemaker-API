@@ -345,7 +345,7 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 
 # source: http://webapp2.readthedocs.io/en/latest/guide/routing.html
 app = webapp2.WSGIApplication([
-    (r'/rest/profiles/(\d+)notes/(\d+)', NotesIDPage),
+    (r'/rest/profiles/(\d+)/notes/(\d+)', NotesIDPage),
     (r'/rest/notes', NotesListPage),
     (r'/rest/profiles/(\d+)', ProfileIDPage),
     (r'/rest/profiles', ProfileListPage),
