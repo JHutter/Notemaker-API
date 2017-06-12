@@ -255,39 +255,38 @@ class NotesListPage(webapp2.RequestHandler):
     def post(self):
         self.response.write(self.request.headers)
         
-        # try:
-        #header = self.request.environ['HTTP_AUTHORIZATION']
-        header = self.request.headers['Authorization']
-        userid = getUserId(header)
-        
-        if (userid == 'Error' or userid == 'None'):
-            # bad userId or auth
-            status = '403 Forbidden'
-            message = 'invalid authorization'
-            note = {}
-        else:
-            query = Profile.query(Profile.userid == userid).get()
-            if (query is not None):
-                keyid = query.key
-                title = self.request.get('title', default_value='untitled')
-                content = self.request.get('content', default_value='[empty]')
-                date_added = datetime.date.today()
-                visible = self.request.get('visible', default_value='False')
-                noteid = str(noteidInc.getNextAutoInc())
-                
-                newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'), noteid=noteid)
-                #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
-                newKey = newNote.put()
-                status = '201 Created'
-                message = 'note created'
-                note = {'id':keyid.urlsafe(), 'title': title, 'content': content, 'date_added': str(date_added), 'visible':visible}
-                self.response.write(str(newKey))
-                
-            else:
-                status = '404 Not Found'
-                message = 'no matching profile for authorization given'
+        try:
+            #header = self.request.environ['HTTP_AUTHORIZATION']
+            header = self.request.headers['Authorization']
+            userid = getUserId(header)
+            
+            if (userid == 'Error' or userid == 'None'):
+                # bad userId or auth
+                status = '403 Forbidden'
+                message = 'invalid authorization'
                 note = {}
-                
+            else:
+                query = Profile.query(Profile.userid == userid).get()
+                if (query is not None):
+                    keyid = query.key
+                    title = self.request.get('title', default_value='untitled')
+                    content = self.request.get('content', default_value='[empty]')
+                    date_added = datetime.date.today()
+                    visible = self.request.get('visible', default_value='False')
+                    noteid = str(noteidInc.getNextAutoInc())
+                    
+                    newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'), noteid=noteid)
+                    #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
+                    newKey = newNote.put()
+                    status = '201 Created'
+                    message = 'note created'
+                    note = {'id':keyid.urlsafe(), 'title': title, 'content': content, 'date_added': str(date_added), 'visible':visible}
+                    self.response.write(str(newKey))
+                    
+                else:
+                    status = '404 Not Found'
+                    message = 'no matching profile for authorization given'
+                    note = {}
                 
             
         except (KeyError, AttributeError):
