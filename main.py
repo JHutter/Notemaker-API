@@ -88,7 +88,7 @@ def validateNote(noteid):
     
     for result in results:
         newArr.append((result.key.string_id(), str(noteid)))
-        if result.key.string_id() == str(noteid):
+        #if result.key.string_id() == str(noteid):
             #return True
     
     return resArr
