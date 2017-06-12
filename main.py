@@ -330,6 +330,9 @@ class NotesIDPage(webapp2.RequestHandler):
             
             self.response.write(str(noteExist))
             self.response.write(note_id)
+        
+        except (KeyError, AttributeError):
+            self.response.write('couldn\'t get header')
             
         
        
