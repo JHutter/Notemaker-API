@@ -405,18 +405,12 @@ class NotesIDPage(webapp2.RequestHandler):
             auth = validateUserId(profile_id, header)
             comboValid = validateProfileHasNoteId(str(profile_id), str(note_id))
             if (auth and comboValid):   
-                #delete the note
-                # noteDel = Note.query(Note.noteid == note_id).get()
-                # noteDel.key.delete()
-                # self.response.write('patch the note')
-                
+                # get and patch the note
                 newTitle = self.request.get('title', default_value='same')
                 newContent = self.request.get('content', default_value='same')
                 newVisible = self.request.get('feeling', default_value='same')
                 
                 oldNote = Note.query(Note.noteid == note_id).get()
-                
-                # keyid = oldNote.key.get()
                 
                 if (newTitle != 'same'):
                     oldNote.title = newTitle
