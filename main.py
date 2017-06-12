@@ -375,13 +375,22 @@ class NotesIDPage(webapp2.RequestHandler):
     def delete(self, profile_id, note_id):  
         #delete the given note (must match profile)
         #stub
-        self.response.write('delete the note')
         try:
             header = self.request.environ['HTTP_AUTHORIZATION']
             auth = validateUserId(profile_id, header)
             comboValid = validateProfileHasNoteId(str(profile_id), str(note_id))
-        except (KeyError, AttributeError):
-            auth = False
+            if (auth and comboValid):   
+                #delete the note
+                self.response.write('delete the note')
+                status = '200 OK'
+            message = 'note deleted'
+            else:
+                raise Exception
+        except (KeyError, AttributeError, Exception):
+            status = '403 Forbidden'
+            message = 'No access to delete this note'
+            
+        self.response.out.write(json.dumps({'status': status, 'message':message}))
         
         
     def patch(self, profile_id, note_id):
