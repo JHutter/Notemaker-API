@@ -374,7 +374,6 @@ class NotesIDPage(webapp2.RequestHandler):
             
     def delete(self, profile_id, note_id):  
         #delete the given note (must match profile)
-        #stub
         try:
             header = self.request.environ['HTTP_AUTHORIZATION']
             auth = validateUserId(profile_id, header)
@@ -389,17 +388,60 @@ class NotesIDPage(webapp2.RequestHandler):
                 message = 'note deleted'
             else:
                 raise Exception
-        except (KeyError, AttributeError, Exception):
+        except (KeyError, AttributeError):
             status = '403 Forbidden'
             message = 'No access to delete this note'
+        except (Exception):
+            status = '404 Not Found'
+            message = 'No matching profile/note combination'
             
         self.response.out.write(json.dumps({'status': status, 'message':message}))
         
         
     def patch(self, profile_id, note_id):
-        #path the given note (must match profile)
-        #stub
-        self.response.write('patch the note')
+        #patch the given note (must match profile)
+        try:
+            header = self.request.environ['HTTP_AUTHORIZATION']
+            auth = validateUserId(profile_id, header)
+            comboValid = validateProfileHasNoteId(str(profile_id), str(note_id))
+            if (auth and comboValid):   
+                #delete the note
+                # noteDel = Note.query(Note.noteid == note_id).get()
+                # noteDel.key.delete()
+                # self.response.write('patch the note')
+                
+                newTitle = self.request.get('title', default_value='same')
+                newContent = self.request.get('content', default_value='same')
+                newVisible = self.request.get('feeling', default_value='same')
+                
+                oldNote = Note.query(Note.noteid == note_id).get()
+                
+                # keyid = oldNote.key.get()
+                
+                if (newTitle != 'same'):
+                    oldNote.title = newTitle
+                if (newContent != 'same'):
+                    oldNote.content = newContent
+                if (newVisible != 'same'):
+                    oldNote.visible = newVisible
+                oldNote.put()
+                
+                #self.response.write('delete the note')
+                status = '200 OK'
+                message = 'note modified'
+                
+            else:
+                raise Exception
+        except (KeyError, AttributeError):
+            status = '403 Forbidden'
+            message = 'No access to modify this note'
+            
+        except (Exception):
+            status = '404 Not Found'
+            message = 'No matching profile/note combination'
+            
+            
+        self.response.out.write(json.dumps({'status': status, 'message':message}))
        
         
 
