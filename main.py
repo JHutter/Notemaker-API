@@ -351,7 +351,7 @@ class NotesIDPage(webapp2.RequestHandler):
                     
                 else:
                     # ret anyway
-                    lines = Note.query(Note.noteid == note_id).iter())
+                    lines = Note.query(Note.noteid == note_id).iter()
                     jsonline = []
                     for line in lines:
                         jsonline.append({'title': line.title, 'id': note_id, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
