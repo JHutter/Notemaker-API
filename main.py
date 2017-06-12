@@ -269,9 +269,6 @@ class NotesListPage(webapp2.RequestHandler):
             query = Profile.query(Profile.userid == userid).get()
             if (query is not None):
                 keyid = query.key
-                # note_id = getNextNoteNum(lastNoteNum)
-                #lastNoteNum += 1
-                #owner = keyid
                 title = self.request.get('title', default_value='untitled')
                 content = self.request.get('content', default_value='[empty]')
                 date_added = datetime.date.today()
@@ -293,10 +290,10 @@ class NotesListPage(webapp2.RequestHandler):
                 
                 
             
-        # except (KeyError, AttributeError):
-            # status = '401 Unauthorized'
-            # message = 'no authorization included'
-            # note = {}
+        except (KeyError, AttributeError):
+            status = '401 Unauthorized'
+            message = 'no authorization included'
+            note = {}
             
             
         self.response.out.write(json.dumps({'status': status, 'message': message, 'note': note}))
