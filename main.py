@@ -32,7 +32,7 @@ class AutoIncrement():
         self.lastAutoInc += 1
         return self.lastAutoInc
         
-#noteidInc = AutoIncrement()
+noteidInc = AutoIncrement()
 
 class Profile(ndb.Model):
     userid = ndb.StringProperty()
@@ -44,7 +44,7 @@ class Profile(ndb.Model):
 # source: https://stackoverflow.com/questions/17190626/one-to-many-relationship-in-ndb
 class Note(ndb.Model):
     owner = ndb.KeyProperty(kind='Profile')
-    #noteid = ndb.StringProperty()
+    noteid = ndb.StringProperty()
     title = ndb.StringProperty()
     content = ndb.StringProperty()
     date_added = ndb.DateProperty()
@@ -297,14 +297,14 @@ class NotesListPage(webapp2.RequestHandler):
                     content = self.request.get('content', default_value='[empty]')
                     date_added = datetime.date.today()
                     visible = self.request.get('visible', default_value='False')
-                    #noteid = str(noteidInc.getNextAutoInc())
+                    noteid = str(noteidInc.getNextAutoInc())
                     
-                    newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'))
+                    newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'), noteid=noteid)
                     #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
                     newKey = newNote.put()
                     status = '201 Created'
                     message = 'note created'
-                    note = {'id':str(keyid), 'title': title, 'content': content, 'date_added': str(date_added), 'visible':str(visible)}
+                    note = {'id':noteid, 'title': title, 'content': content, 'date_added': str(date_added), 'visible':str(visible)}
                     
                     
                 else:
@@ -345,23 +345,23 @@ class NotesIDPage(webapp2.RequestHandler):
             else:
                 if (not auth):
                     # only ret if public
-                    lines = Note.query(Note.visible == True, Note.key.id == long(note_id)).iter()
+                    lines = Note.query(Note.visible == True, Note.noteid == note_id).iter()
                     jsonline = []
                     for line in lines:
                         jsonline.append({'title': line.title, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
+                    
                 else:
                     # ret anyway
                     lines = Note.query(Note.key.id == long(note_id)).iter())
                     jsonline = []
                     for line in lines:
-                        jsonline.append({'title': line.title, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
-                    
-                
+                        jsonline.append({'title': line.title, 'id': note_id, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
                 status = '200 OK'
                 message = 'note returned'
-                note = {}
-        self.response.write(str(noteExist))
-        self.response.write(note_id)
+                note = jsonline
+                
+                
+        self.response.write(json.dump({'status': status, 'message': message, 'note': note}))
         
         #except (KeyError, AttributeError):
             
