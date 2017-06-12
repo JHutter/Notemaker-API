@@ -276,7 +276,7 @@ class NotesListPage(webapp2.RequestHandler):
                 content = self.request.get('content', default_value='[empty]')
                 date_added = datetime.date.today()
                 visible = self.request.get('visible', default_value='False')
-                noteid = noteidInc.getNextAutoInc()
+                noteid = str(noteidInc.getNextAutoInc())
                 
                 newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'), noteid=noteid)
                 #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
