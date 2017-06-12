@@ -87,21 +87,6 @@ class AutoIncrement():
     def getNextAutoInc(self):
         lastNoteNum += 1
         return lastNoteNum
-
-# json the ndb entities
-# source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable/13312041      
-class JSONEncoder(json.JSONEncoder):
-
-    def default(self, o):
-        # If this is a key, you might want to grab the actual model.
-        if isinstance(o, ndb.Key):
-            o = ndb.get(o)
-
-        if isinstance(o, ndb.Model):
-            return ndb.to_dict(o)
-        elif isinstance(o, (datetime, date, time)):
-            return str(o)   
-
             
 class RestPage(webapp2.RequestHandler):
     def get(self):
@@ -127,7 +112,11 @@ class ProfileIDPage(webapp2.RequestHandler):
             self.response.out.write(json.dumps({'profiles':[]}))
         elif (auth): 
             #self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch()]}))
-            self.response.out.write(JSONEncoder().encode(Profile.query(Profile.userid == profile_id).fetch()))
+            lines = Profile.query(Profile.userid == profile_id).iter()
+            jsonline = []
+            for line in lines:
+                jsonline.append({'id': profile_id, 'handle': line.handle, 'feeling': line.feeling, 'bio': line.bio}) # exclude userid
+            self.response.out.write(json.dumps({'profiles':jsonline}))
         else:    
             lines = Profile.query(Profile.userid == profile_id).iter()
             jsonline = []
@@ -268,7 +257,12 @@ class NotesListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
         # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
-        self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visible == True).fetch()]})) 
+        #self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visible == True).fetch()]})) 
+        lines = Note.query(Note.visible == True).iter()
+        jsonline = []
+        for line in lines:
+            jsonline.append({'title': line.title, 'date_added': str(line.date_added), 'content': line.content, 'visible': str(line.visible)})
+        self.response.out.write(json.dumps({'notes':jsonline}))
         
         
     def post(self):
@@ -299,8 +293,8 @@ class NotesListPage(webapp2.RequestHandler):
                     newKey = newNote.put()
                     status = '201 Created'
                     message = 'note created'
-                    note = {'id':keyid.urlsafe(), 'title': title, 'content': content, 'date_added': str(date_added), 'visible':visible}
-                    self.response.write(str(newKey))
+                    note = {'id':str(keyid), 'title': title, 'content': content, 'date_added': str(date_added), 'visible':str(visible)}
+                    
                     
                 else:
                     status = '404 Not Found'
