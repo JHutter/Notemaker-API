@@ -474,15 +474,6 @@ class NotesForUserPage(webapp2.RequestHandler):
         status = '200 OK'
         message = 'note returned'
         notesArr = jsonline
-        
-        
-        else:
-            if (not validProfile):  
-                status = '404 Not Found'
-                message = 'no matching profile found'
-                note = {}
-            else:
-                
 
         self.response.write(json.dumps({'status': status, 'message': message, 'notes': notesArr}))
         
