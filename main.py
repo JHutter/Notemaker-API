@@ -465,6 +465,7 @@ class NotesForUserPage(webapp2.RequestHandler):
             
         else:
             # ret anyway
+            note_id = noteidInc.getNextAutoInc()
             lines = Note.query().iter()
             jsonline = []
             for line in lines:
