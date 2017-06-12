@@ -82,13 +82,12 @@ def validateUserId(id, token):
     return False
     
 def validateNote(noteid):
-    results = Note.query().fetch()
+    result = Note.query(Note.noteid == noteid).get()
     
-    for result in results:
-        if result.key.id() == long(noteid):
+    if (result is not None):
             return True
-    
-    return False
+    else:
+        return False
     
     
 
