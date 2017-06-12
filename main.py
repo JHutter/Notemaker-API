@@ -87,11 +87,11 @@ def validateNote(noteid):
     resArr = []
     
     for result in results:
-        resArr.append((result.key.id(), str(noteid)))
-        #if result.key.string_id() == str(noteid):
-            #return True
+        resArr.append((result.key.id(), result.key.id()))
+        if result.key.id() == noteid:
+            return True
     
-    return resArr
+    return False
     
     
 
