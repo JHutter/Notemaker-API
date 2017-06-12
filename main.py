@@ -94,11 +94,11 @@ class JSONEncoder(json.JSONEncoder):
 
     def default(self, o):
         # If this is a key, you might want to grab the actual model.
-        if isinstance(o, db.Key):
-            o = db.get(o)
+        if isinstance(o, ndb.Key):
+            o = ndb.get(o)
 
-        if isinstance(o, db.Model):
-            return db.to_dict(o)
+        if isinstance(o, ndb.Model):
+            return ndb.to_dict(o)
         elif isinstance(o, (datetime, date, time)):
             return str(o)   
 
