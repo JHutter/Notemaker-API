@@ -383,7 +383,7 @@ class NotesIDPage(webapp2.RequestHandler):
                 #delete the note
                 self.response.write('delete the note')
                 status = '200 OK'
-            message = 'note deleted'
+                message = 'note deleted'
             else:
                 raise Exception
         except (KeyError, AttributeError, Exception):
