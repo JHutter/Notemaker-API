@@ -360,7 +360,7 @@ class NotesIDPage(webapp2.RequestHandler):
                 note = jsonline
                 
                 
-        self.response.write(json.dump({'status': status, 'message': message, 'note': note}))
+        self.response.write(json.dumps({'status': status, 'message': message, 'note': note}))
         
         #except (KeyError, AttributeError):
             
