@@ -82,12 +82,15 @@ def validateUserId(id, token):
     return False
     
 def validateNote(noteid):
-    result = Note.query(Note.Name==noteid)
+    results = Note.query(keys_only=True)
     
-    if (result.get() is not None):
-        return True
-    else:
-        return False
+    for result in results:
+        if result.string_id() == noteid:
+            return True
+    
+    return False
+    
+    
 
 class AutoIncrement():
     lastNoteNum = 0
