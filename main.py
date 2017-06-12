@@ -22,6 +22,18 @@ oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 # ndb entities, four properies each, with a one-to-many relationship (profile can have any number of notes)
 # source: https://cloud.google.com/appengine/articles/modeling
 # source: https://stackoverflow.com/questions/10077300/one-to-many-example-in-ndb
+class AutoIncrement():
+    
+    def __init__(self):
+        """ Create a new point at the origin """
+        self.lastAutoInc = 0
+        
+    def getNextAutoInc(self):
+        self.lastAutoInc += 1
+        return self.lastAutoInc
+        
+noteidInc = AutoIncrement()
+
 class Profile(ndb.Model):
     userid = ndb.StringProperty()
     handle = ndb.StringProperty()
@@ -264,7 +276,7 @@ class NotesListPage(webapp2.RequestHandler):
                 content = self.request.get('content', default_value='[empty]')
                 date_added = datetime.date.today()
                 visible = self.request.get('visible', default_value='False')
-                noteid = AutoIncrement.getNextAutoInc()
+                noteid = noteidInc.getNextAutoInc()
                 
                 newNote = Note(owner=keyid, title=title, content=content, date_added=date_added, visible=(visible=='True'), noteid=noteid)
                 #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
