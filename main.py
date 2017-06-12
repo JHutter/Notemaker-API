@@ -381,7 +381,10 @@ class NotesIDPage(webapp2.RequestHandler):
             comboValid = validateProfileHasNoteId(str(profile_id), str(note_id))
             if (auth and comboValid):   
                 #delete the note
-                self.response.write('delete the note')
+                noteDel = Note.query(Note.noteid == note_id).get()
+                noteDel.key.delete()
+                
+                #self.response.write('delete the note')
                 status = '200 OK'
                 message = 'note deleted'
             else:
