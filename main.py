@@ -250,7 +250,10 @@ class NotesListPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'  
         # source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable
-        self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visible == True).fetch()]})) 
+        #self.response.out.write(json.dumps({'notes':[line.to_dict() for line in Note.query(Note.visible == True).fetch()]})) 
+        newNote = Note(title='654564', content='987454', visible=True, noteid='777777')
+        #newProfile = Profile(userid=user_id, handle=handle, feeling=feeling, bio=bio)
+        newKey = newNote.put()
         
     def post(self):
         self.response.write(self.request.headers)
