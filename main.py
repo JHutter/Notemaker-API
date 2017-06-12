@@ -87,7 +87,22 @@ class AutoIncrement():
     def getNextAutoInc(self):
         lastNoteNum += 1
         return lastNoteNum
-    
+
+# json the ndb entities
+# source: https://stackoverflow.com/questions/13311363/appengine-making-ndb-models-json-serializable/13312041      
+class JSONEncoder(json.JSONEncoder):
+
+    def default(self, o):
+        # If this is a key, you might want to grab the actual model.
+        if isinstance(o, db.Key):
+            o = db.get(o)
+
+        if isinstance(o, db.Model):
+            return db.to_dict(o)
+        elif isinstance(o, (datetime, date, time)):
+            return str(o)   
+
+            
 class RestPage(webapp2.RequestHandler):
     def get(self):
         self.response.write('You shouldn\'t be here...')
@@ -111,13 +126,16 @@ class ProfileIDPage(webapp2.RequestHandler):
         if (query.get() is None):
             self.response.out.write(json.dumps({'profiles':[]}))
         elif (auth): 
-            self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch()]}))
+            #self.response.out.write(json.dumps({'profiles':[line.to_dict() for line in Profile.query(Profile.userid == profile_id).fetch()]}))
+            self.response.out.write(JSONEncoder().encode(Profile.query(Profile.userid == profile_id).fetch()))
         else:    
             lines = Profile.query(Profile.userid == profile_id).iter()
             jsonline = []
             for line in lines:
                 jsonline.append({'handle': line.handle, 'feeling': line.feeling, 'bio': line.bio}) # exclude userid
             self.response.out.write(json.dumps({'profiles':jsonline}))
+            
+            
             
     def patch(self, profile_id):
         try:
