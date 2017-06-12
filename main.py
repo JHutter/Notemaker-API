@@ -284,7 +284,7 @@ class NotesListPage(webapp2.RequestHandler):
                 status = '201 Created'
                 message = 'note created'
                 note = {'id':keyid.urlsafe(), 'title': title, 'content': content, 'date_added': str(date_added), 'visible':visible}
-                self.response.write(newKey.urlsale())
+                self.response.write(str(newKey))
                 
             else:
                 status = '404 Not Found'
