@@ -82,10 +82,10 @@ def validateUserId(id, token):
     return False
     
 def validateNote(noteid):
-    results = Note.query(keys_only=True)
+    results = Note.query().fetch()
     
     for result in results:
-        if result.string_id() == noteid:
+        if result.key.string_id() == noteid:
             return True
     
     return False
