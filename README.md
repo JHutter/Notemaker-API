@@ -28,7 +28,7 @@ Jon Hutter, github.com/jhutter
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file or [here](http://www.apache.org/licenses/LICENSE-2.0) for details
+This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file or [here](http://www.apache.org/licenses/LICENSE-2.0) for details
 
 ## Acknowledgments
 
