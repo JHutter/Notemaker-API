@@ -12,7 +12,7 @@ import logging
 
 
 client = '387463041973-2j1noh0p0danoujlobm20q9378375b0n.apps.googleusercontent.com'
-secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g'
+secret_str = 'Vgv_V2H9yTkXsmc-bK8VHy0g' ## don't do this in production, guys
 oauth_redir = 'https://final-project-496-400.appspot.com/oauth'
 
 class MainPage(webapp2.RequestHandler):
